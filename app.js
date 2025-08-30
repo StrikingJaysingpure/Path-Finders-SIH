@@ -1,8 +1,8 @@
-// PM Internship Recommendation App - JavaScript
+// PM Internship Recommendation App - JavaScript (English Only)
+
 class InternshipApp {
     constructor() {
         this.currentScreen = 'welcome-screen';
-        this.currentLanguage = 'en';
         this.userProfile = {
             education: null,
             skills: [],
@@ -10,15 +10,6 @@ class InternshipApp {
             location: null,
             state: null
         };
-        
-        this.init();
-    }
-
-    init() {
-        this.populateSkillsGrid();
-        this.populateSectorsGrid();
-        this.populateStateDropdown();
-        this.setupEventListeners();
     }
 
     // Sample data
@@ -32,7 +23,7 @@ class InternshipApp {
             sector: "Telecommunications",
             duration: "12 months",
             stipend: 5000,
-            skills_required: ["Communication", "Hindi", "English", "Computer Basics"],
+            skills_required: ["Communication", "English", "Computer Basics"],
             education_required: "12th Pass",
             description: "Handle customer queries and provide support"
         },
@@ -136,7 +127,7 @@ class InternshipApp {
             sector: "Education",
             duration: "12 months",
             stipend: 5000,
-            skills_required: ["Teaching", "Patience", "Communication", "Hindi"],
+            skills_required: ["Teaching", "Patience", "Communication"],
             education_required: "Graduate",
             description: "Assist teachers and support student learning"
         },
@@ -156,30 +147,29 @@ class InternshipApp {
     ];
 
     skillsOptions = [
-        {id: "communication", name: "Communication", nameHi: "संवाद", icon: "💬"},
-        {id: "computer", name: "Computer Skills", nameHi: "कंप्यूटर कौशल", icon: "💻"},
-        {id: "hindi", name: "Hindi", nameHi: "हिंदी", icon: "🗣️"},
-        {id: "english", name: "English", nameHi: "अंग्रेजी", icon: "📝"},
-        {id: "mathematics", name: "Mathematics", nameHi: "गणित", icon: "🔢"},
-        {id: "sales", name: "Sales", nameHi: "बिक्री", icon: "🤝"},
-        {id: "customer_service", name: "Customer Service", nameHi: "ग्राहक सेवा", icon: "👥"},
-        {id: "technical", name: "Technical Skills", nameHi: "तकनीकी कौशल", icon: "🔧"},
-        {id: "teaching", name: "Teaching", nameHi: "शिक्षण", icon: "📚"},
-        {id: "healthcare", name: "Healthcare", nameHi: "स्वास्थ्य सेवा", icon: "🏥"},
-        {id: "agriculture", name: "Agriculture", nameHi: "कृषि", icon: "🌱"},
-        {id: "organization", name: "Organization", nameHi: "संगठन", icon: "📋"}
+        {id: "communication", name: "Communication", icon: "💬"},
+        {id: "computer", name: "Computer Skills", icon: "💻"},
+        {id: "english", name: "English", icon: "📝"},
+        {id: "mathematics", name: "Mathematics", icon: "🔢"},
+        {id: "sales", name: "Sales", icon: "🤝"},
+        {id: "customer_service", name: "Customer Service", icon: "👥"},
+        {id: "technical", name: "Technical Skills", icon: "🔧"},
+        {id: "teaching", name: "Teaching", icon: "📚"},
+        {id: "healthcare", name: "Healthcare", icon: "🏥"},
+        {id: "agriculture", name: "Agriculture", icon: "🌱"},
+        {id: "organization", name: "Organization", icon: "📋"}
     ];
 
     sectors = [
-        {id: "technology", name: "Technology", nameHi: "प्रौद्योगिकी", icon: "💻"},
-        {id: "healthcare", name: "Healthcare", nameHi: "स्वास्थ्य सेवा", icon: "🏥"},
-        {id: "banking", name: "Banking", nameHi: "बैंकिंग", icon: "🏦"},
-        {id: "retail", name: "Retail", nameHi: "खुदरा", icon: "🛒"},
-        {id: "education", name: "Education", nameHi: "शिक्षा", icon: "📚"},
-        {id: "manufacturing", name: "Manufacturing", nameHi: "विनिर्माण", icon: "🏭"},
-        {id: "agriculture", name: "Agriculture", nameHi: "कृषि", icon: "🌾"},
-        {id: "telecommunications", name: "Telecommunications", nameHi: "दूरसंचार", icon: "📱"},
-        {id: "ecommerce", name: "E-commerce", nameHi: "ई-कॉमर्स", icon: "📦"}
+        {id: "technology", name: "Technology", icon: "💻"},
+        {id: "healthcare", name: "Healthcare", icon: "🏥"},
+        {id: "banking", name: "Banking", icon: "🏦"},
+        {id: "retail", name: "Retail", icon: "🛒"},
+        {id: "education", name: "Education", icon: "📚"},
+        {id: "manufacturing", name: "Manufacturing", icon: "🏭"},
+        {id: "agriculture", name: "Agriculture", icon: "🌾"},
+        {id: "telecommunications", name: "Telecommunications", icon: "📱"},
+        {id: "ecommerce", name: "E-commerce", icon: "📦"}
     ];
 
     states = [
@@ -187,39 +177,26 @@ class InternshipApp {
         "Telangana", "Rajasthan", "Madhya Pradesh", "West Bengal", "Haryana", "Punjab"
     ];
 
-    // Language management
-    setLanguage(lang) {
-        this.currentLanguage = lang;
-        this.updateLanguageDisplay();
-        
-        // Auto-proceed to first step after language selection
-        setTimeout(() => {
-            this.showScreen('education-screen');
-        }, 500);
-    }
-
-    updateLanguageDisplay() {
-        const elements = document.querySelectorAll('[data-en][data-hi]');
-        elements.forEach(element => {
-            const text = this.currentLanguage === 'hi' ? element.getAttribute('data-hi') : element.getAttribute('data-en');
-            element.textContent = text;
-        });
-
-        // Update skills and sectors with language-specific names
+    init() {
         this.populateSkillsGrid();
         this.populateSectorsGrid();
+        this.populateStateDropdown();
+        this.setupEventListeners();
     }
 
     // Screen navigation
-    showScreen(screenId) {
+    showScreen(screenId) {        
         // Hide all screens
         document.querySelectorAll('.screen').forEach(screen => {
             screen.classList.remove('active');
         });
         
         // Show target screen
-        document.getElementById(screenId).classList.add('active');
-        this.currentScreen = screenId;
+        const targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.classList.add('active');
+            this.currentScreen = screenId;
+        }
 
         // Scroll to top
         window.scrollTo(0, 0);
@@ -260,8 +237,12 @@ class InternshipApp {
         // Reset form selections
         document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
         document.querySelectorAll('.next-btn').forEach(btn => btn.disabled = true);
-        document.getElementById('state-selector').classList.add('hidden');
-        document.getElementById('state-dropdown').value = '';
+        
+        const stateSelector = document.getElementById('state-selector');
+        if (stateSelector) stateSelector.classList.add('hidden');
+        
+        const stateDropdown = document.getElementById('state-dropdown');
+        if (stateDropdown) stateDropdown.value = '';
         
         this.showScreen('welcome-screen');
     }
@@ -280,7 +261,7 @@ class InternshipApp {
             skillElement.setAttribute('tabindex', '0');
             skillElement.innerHTML = `
                 <div class="skill-icon">${skill.icon}</div>
-                <div class="skill-name">${this.currentLanguage === 'hi' ? skill.nameHi : skill.name}</div>
+                <div class="skill-name">${skill.name}</div>
             `;
             
             // Add click handler
@@ -309,7 +290,7 @@ class InternshipApp {
             sectorElement.setAttribute('tabindex', '0');
             sectorElement.innerHTML = `
                 <div class="sector-icon">${sector.icon}</div>
-                <div class="sector-name">${this.currentLanguage === 'hi' ? sector.nameHi : sector.name}</div>
+                <div class="sector-name">${sector.name}</div>
             `;
             
             // Add click handler
@@ -341,18 +322,19 @@ class InternshipApp {
     }
 
     // Form interactions
-    selectEducation(level) {
+    selectEducation(level) {        
         // Remove previous selection
         document.querySelectorAll('#education-screen .selection-card').forEach(card => {
             card.classList.remove('selected');
         });
         
-        // Add selection to clicked card  
-        const clickedCard = document.querySelector(`#education-screen .selection-card[onclick*="${level}"]`) || 
-                            event.target.closest('.selection-card');
-        if (clickedCard) {
-            clickedCard.classList.add('selected');
-        }
+        // Find and select the clicked card
+        const cards = document.querySelectorAll('#education-screen .selection-card');
+        cards.forEach(card => {
+            if (card.getAttribute('onclick') && card.getAttribute('onclick').includes(level)) {
+                card.classList.add('selected');
+            }
+        });
         
         // Update user profile
         this.userProfile.education = level;
@@ -373,7 +355,6 @@ class InternshipApp {
             this.userProfile.skills.push(skillId);
         }
         
-        console.log('Skills updated:', this.userProfile.skills); // Debug log
         this.updateSkillsNextButton();
     }
 
@@ -386,12 +367,10 @@ class InternshipApp {
             this.userProfile.sectors.push(sectorId);
         } else {
             // Show message about 3 sector limit
-            this.showTemporaryMessage(this.currentLanguage === 'hi' ? 
-                'केवल 3 क्षेत्र चुन सकते हैं' : 'You can only select 3 sectors');
+            this.showTemporaryMessage('You can only select 3 sectors');
             return;
         }
         
-        console.log('Sectors updated:', this.userProfile.sectors); // Debug log
         this.updateSkillsNextButton();
     }
 
@@ -400,25 +379,24 @@ class InternshipApp {
         const hasSectors = this.userProfile.sectors.length > 0;
         const nextBtn = document.getElementById('skills-next');
         
-        console.log('Updating button - Skills:', hasSkills, 'Sectors:', hasSectors); // Debug log
-        
         if (nextBtn) {
             nextBtn.disabled = !(hasSkills && hasSectors);
-            console.log('Button disabled:', nextBtn.disabled); // Debug log
         }
     }
 
-    selectLocation(type) {
+    selectLocation(type) {        
         // Remove previous selection
         document.querySelectorAll('.location-card').forEach(card => {
             card.classList.remove('selected');
         });
         
-        // Add selection to clicked card
-        const clickedCard = event.target.closest('.location-card');
-        if (clickedCard) {
-            clickedCard.classList.add('selected');
-        }
+        // Find and select the clicked card
+        const cards = document.querySelectorAll('.location-card');
+        cards.forEach(card => {
+            if (card.getAttribute('onclick') && card.getAttribute('onclick').includes(type)) {
+                card.classList.add('selected');
+            }
+        });
         
         // Update user profile
         this.userProfile.location = type;
@@ -577,7 +555,6 @@ class InternshipApp {
             if (userSkillsNormalized.includes(requiredNormalized) || 
                 requiredNormalized.includes('communication') && userSkillsNormalized.includes('communication') ||
                 requiredNormalized.includes('computer') && userSkillsNormalized.includes('computer') ||
-                requiredNormalized.includes('hindi') && userSkillsNormalized.includes('hindi') ||
                 requiredNormalized.includes('english') && userSkillsNormalized.includes('english')) {
                 skillScore += 100;
             }
@@ -643,8 +620,8 @@ class InternshipApp {
         if (recommendations.length === 0) {
             container.innerHTML = `
                 <div class="no-recommendations">
-                    <h3>${this.currentLanguage === 'hi' ? 'कोई उपयुक्त इंटर्नशिप नहीं मिली' : 'No suitable internships found'}</h3>
-                    <p>${this.currentLanguage === 'hi' ? 'कृपया अपनी प्राथमिकताएं बदलकर फिर से कोशिश करें' : 'Please try again with different preferences'}</p>
+                    <h3>No suitable internships found</h3>
+                    <p>Please try again with different preferences</p>
                 </div>
             `;
             return;
@@ -658,7 +635,7 @@ class InternshipApp {
             const matchPercentage = Math.round(internship.score);
             
             card.innerHTML = `
-                <div class="score-badge">${matchPercentage}% ${this.currentLanguage === 'hi' ? 'मैच' : 'Match'}</div>
+                <div class="score-badge">${matchPercentage}% Match</div>
                 <div class="recommendation-header">
                     <div class="company-icon">${companyInitial}</div>
                     <div class="recommendation-info">
@@ -683,120 +660,102 @@ class InternshipApp {
                 </div>
                 
                 <div class="recommendation-actions">
-                    <button class="btn btn--primary apply-btn" onclick="app.applyToInternship(${internship.id})">
-                        ${this.currentLanguage === 'hi' ? 'आवेदन करें' : 'Apply Now'}
+                    <button class="btn btn--primary apply-btn" data-internship-id="${internship.id}">
+                        Apply Now
                     </button>
-                    <button class="btn btn--secondary details-btn" onclick="app.toggleDetails(${internship.id})">
-                        ${this.currentLanguage === 'hi' ? 'विवरण देखें' : 'View Details'}
+                    <button class="btn btn--secondary details-btn" data-internship-id="${internship.id}">
+                        View Details
                     </button>
                 </div>
                 
                 <div class="job-description" id="details-${internship.id}">
-                    <h4>${this.currentLanguage === 'hi' ? 'काम का विवरण' : 'Job Description'}</h4>
+                    <h4>Job Description</h4>
                     <p>${internship.description}</p>
-                    <h4>${this.currentLanguage === 'hi' ? 'आवश्यक कौशल' : 'Required Skills'}</h4>
+                    <h4>Required Skills</h4>
                     <p>${internship.skills_required.join(', ')}</p>
                 </div>
             `;
             
             container.appendChild(card);
         });
+
+        // Add event listeners to recommendation buttons
+        this.setupRecommendationListeners();
     }
 
-    toggleDetails(internshipId) {
+    setupRecommendationListeners() {
+        // Apply buttons
+        document.querySelectorAll('.apply-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const internshipId = parseInt(e.target.getAttribute('data-internship-id'));
+                this.applyToInternship(internshipId);
+            });
+        });
+
+        // Details buttons
+        document.querySelectorAll('.details-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const internshipId = parseInt(e.target.getAttribute('data-internship-id'));
+                this.toggleDetails(internshipId, e.target);
+            });
+        });
+    }
+
+    toggleDetails(internshipId, button) {
         const details = document.getElementById(`details-${internshipId}`);
         if (!details) return;
         
         details.classList.toggle('show');
         
-        // Find the button that was clicked
-        const button = event.target;
         if (details.classList.contains('show')) {
-            button.textContent = this.currentLanguage === 'hi' ? 'विवरण छुपाएं' : 'Hide Details';
+            button.textContent = 'Hide Details';
         } else {
-            button.textContent = this.currentLanguage === 'hi' ? 'विवरण देखें' : 'View Details';
+            button.textContent = 'View Details';
         }
     }
 
     applyToInternship(internshipId) {
         const internship = this.sampleInternships.find(i => i.id === internshipId);
         if (internship) {
-            this.showTemporaryMessage(
-                this.currentLanguage === 'hi' ? 
-                `${internship.title} के लिए आवेदन सफल!` :
-                `Applied successfully for ${internship.title}!`
-            );
+            this.showTemporaryMessage(`Applied successfully for ${internship.title}!`);
         }
     }
 }
 
-// Global functions for HTML onclick events
-function setLanguage(lang) {
-    if (window.app) {
-        window.app.setLanguage(lang);
-    }
-}
+// Initialize the app
+let app = null;
 
+// Global functions for HTML onclick handlers
 function startApplication() {
-    if (window.app) {
-        window.app.startApplication();
-    }
+    if (app) app.startApplication();
 }
 
 function goBack() {
-    if (window.app) {
-        window.app.goBack();
-    }
+    if (app) app.goBack();
 }
 
 function nextStep() {
-    if (window.app) {
-        window.app.nextStep();
-    }
+    if (app) app.nextStep();
 }
 
 function selectEducation(level) {
-    if (window.app) {
-        window.app.selectEducation(level);
-    }
+    if (app) app.selectEducation(level);
 }
 
 function selectLocation(type) {
-    if (window.app) {
-        window.app.selectLocation(type);
-    }
+    if (app) app.selectLocation(type);
 }
 
 function getRecommendations() {
-    if (window.app) {
-        window.app.getRecommendations();
-    }
+    if (app) app.getRecommendations();
 }
 
 function startOver() {
-    if (window.app) {
-        window.app.startOver();
-    }
+    if (app) app.startOver();
 }
 
-// Initialize the app when DOM is loaded
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.app = new InternshipApp();
-});
-
-// Text-to-speech support for accessibility (if available)
-function speakText(text) {
-    if ('speechSynthesis' in window && window.app) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = window.app.currentLanguage === 'hi' ? 'hi-IN' : 'en-US';
-        utterance.rate = 0.8;
-        speechSynthesis.speak(utterance);
-    }
-}
-
-// Keyboard navigation support
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && window.app) {
-        window.app.goBack();
-    }
+    app = new InternshipApp();
+    app.init();
 });
