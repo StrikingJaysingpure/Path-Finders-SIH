@@ -13,156 +13,184 @@
             <div class="welcome-content">
                 <div class="logo-section">
                     <h1 class="app-title">🇮🇳 PM Internship</h1>
-                    <p class="app-subtitle" data-en="Find Your Perfect Internship" data-hi="अपनी सही इंटर्नशिप खोजें">Find Your Perfect Internship</p>
-                </div>
-                
-                <div class="language-selector">
-                    <h3 data-en="Choose Language" data-hi="भाषा चुनें">Choose Language</h3>
-                    <div class="language-buttons">
-                        <button class="btn btn--primary language-btn" onclick="setLanguage('hi')">
-                            🗣️ हिंदी
-                        </button>
-                        <button class="btn btn--secondary language-btn" onclick="setLanguage('en')">
-                            🗣️ English
-                        </button>
-                    </div>
+                    <p class="app-subtitle">Find Your Perfect Internship</p>
                 </div>
 
                 <div class="steps-preview">
-                    <h3 data-en="Simple 3 Steps" data-hi="सिर्फ 3 आसान कदम">Simple 3 Steps</h3>
+                    <h3>Simple 3 Steps</h3>
                     <div class="steps-grid">
                         <div class="step-item">
-                            <div class="step-icon">📚</div>
-                            <span data-en="Education" data-hi="शिक्षा">Education</span>
+                            <div class="step-icon">👤</div>
+                            <span>Personal Details</span>
                         </div>
                         <div class="step-item">
-                            <div class="step-icon">💪</div>
-                            <span data-en="Skills" data-hi="कौशल">Skills</span>
+                            <div class="step-icon">🎯</div>
+                            <span>Profile & Skills</span>
                         </div>
                         <div class="step-item">
                             <div class="step-icon">📍</div>
-                            <span data-en="Location" data-hi="स्थान">Location</span>
+                            <span>Location</span>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn btn--primary btn--lg btn--full-width start-btn" onclick="startApplication()" data-en="Get Started" data-hi="शुरू करें">
+                <button class="btn btn--primary btn--lg btn--full-width start-btn" onclick="startApplication()">
                     Get Started ▶️
                 </button>
             </div>
         </div>
 
-        <!-- Step 1: Education -->
-        <div id="education-screen" class="screen">
+        <!-- Personal Details Screen -->
+        <div id="personal-details-screen" class="screen">
             <div class="screen-header">
-                <button class="back-btn" onclick="goBack()">← <span data-en="Back" data-hi="वापस">Back</span></button>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 33%"></div>
-                </div>
-                <div class="step-indicator">
-                    <span data-en="Step 1 of 3" data-hi="चरण 1 का 3">Step 1 of 3</span>
-                </div>
+                <button class="back-btn" onclick="goBack()">← <span>Back</span></button>
+                <h2>Personal Details</h2>
             </div>
             
             <div class="screen-content">
-                <h2 data-en="What is your education level?" data-hi="आपकी शिक्षा का स्तर क्या है?">What is your education level?</h2>
+                <p class="subtitle">Please fill in your basic information</p>
                 
-                <div class="selection-grid">
-                    <div class="selection-card" onclick="selectEducation('10th')">
-                        <div class="card-icon">📖</div>
-                        <div class="card-title" data-en="10th Pass" data-hi="10वीं पास">10th Pass</div>
+                <form class="personal-details-form" id="personal-details-form">
+                    <div class="form-group">
+                        <label class="form-label" for="name">
+                            <span class="label-icon">👤</span>
+                            Full Name *
+                        </label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
                     </div>
-                    <div class="selection-card" onclick="selectEducation('12th')">
-                        <div class="card-icon">🎓</div>
-                        <div class="card-title" data-en="12th Pass" data-hi="12वीं पास">12th Pass</div>
-                    </div>
-                    <div class="selection-card" onclick="selectEducation('iti')">
-                        <div class="card-icon">🔧</div>
-                        <div class="card-title" data-en="ITI/Diploma" data-hi="आईटीआई/डिप्लोमा">ITI/Diploma</div>
-                    </div>
-                    <div class="selection-card" onclick="selectEducation('graduate')">
-                        <div class="card-icon">🎓</div>
-                        <div class="card-title" data-en="Graduate" data-hi="स्नातक">Graduate</div>
-                    </div>
-                </div>
 
-                <button id="education-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="nextStep()" disabled>
-                    <span data-en="Next Step" data-hi="अगला कदम">Next Step</span> →
+                    <div class="form-group">
+                        <label class="form-label" for="age">
+                            <span class="label-icon">📅</span>
+                            Age *
+                        </label>
+                        <input type="number" id="age" class="form-control" placeholder="18-30" min="18" max="30" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="address">
+                            <span class="label-icon">🏠</span>
+                            Address *
+                        </label>
+                        <textarea id="address" class="form-control" placeholder="Enter your full address" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">
+                            <span class="label-icon">📧</span>
+                            Email ID *
+                        </label>
+                        <input type="email" id="email" class="form-control" placeholder="your.email@example.com" required>
+                    </div>
+                </form>
+
+                <button id="personal-details-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="nextStep()" disabled>
+                    <span>Continue</span> →
                 </button>
             </div>
         </div>
 
-        <!-- Step 2: Skills & Interests -->
-        <div id="skills-screen" class="screen">
+        <!-- Step 1: Combined Profile Setup -->
+        <div id="profile-screen" class="screen">
             <div class="screen-header">
-                <button class="back-btn" onclick="goBack()">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <button class="back-btn" onclick="goBack()">← <span>Back</span></button>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 66%"></div>
+                    <div class="progress-fill" style="width: 50%"></div>
                 </div>
                 <div class="step-indicator">
-                    <span data-en="Step 2 of 3" data-hi="चरण 2 का 3">Step 2 of 3</span>
+                    <span>Step 1 of 2</span>
                 </div>
             </div>
             
             <div class="screen-content">
-                <h2 data-en="What are your skills?" data-hi="आपके कौशल क्या हैं?">What are your skills?</h2>
-                <p class="subtitle" data-en="Select all that apply" data-hi="जो लागू हों सभी चुनें">Select all that apply</p>
-                
-                <div class="skills-grid" id="skills-grid">
-                    <!-- Skills will be populated by JavaScript -->
+                <!-- Education Section -->
+                <div class="profile-section">
+                    <h2>What is your education level?</h2>
+                    
+                    <div class="selection-grid">
+                        <div class="selection-card" onclick="selectEducation('10th')">
+                            <div class="card-icon">📖</div>
+                            <div class="card-title">10th Pass</div>
+                        </div>
+                        <div class="selection-card" onclick="selectEducation('12th')">
+                            <div class="card-icon">🎓</div>
+                            <div class="card-title">12th Pass</div>
+                        </div>
+                        <div class="selection-card" onclick="selectEducation('iti')">
+                            <div class="card-icon">🔧</div>
+                            <div class="card-title">ITI/Diploma</div>
+                        </div>
+                        <div class="selection-card" onclick="selectEducation('graduate')">
+                            <div class="card-icon">🎓</div>
+                            <div class="card-title">Graduate</div>
+                        </div>
+                    </div>
                 </div>
 
-                <h2 data-en="Which sectors interest you?" data-hi="कौन से क्षेत्र आपको दिलचस्प लगते हैं?">Which sectors interest you?</h2>
-                <p class="subtitle" data-en="Select up to 3 sectors" data-hi="अधिकतम 3 क्षेत्र चुनें">Select up to 3 sectors</p>
-                
-                <div class="sectors-grid" id="sectors-grid">
-                    <!-- Sectors will be populated by JavaScript -->
+                <!-- Skills Section -->
+                <div class="profile-section">
+                    <h2>What are your skills?</h2>
+                    <p class="subtitle">Select all that apply</p>
+                    
+                    <div class="skills-grid" id="skills-grid">
+                        <!-- Skills will be populated by JavaScript -->
+                    </div>
                 </div>
 
-                <button id="skills-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="nextStep()" disabled>
-                    <span data-en="Next Step" data-hi="अगला कदम">Next Step</span> →
+                <!-- Interests Section -->
+                <div class="profile-section">
+                    <h2>Which sectors interest you?</h2>
+                    <p class="subtitle">Select up to 3 sectors</p>
+                    
+                    <div class="sectors-grid" id="sectors-grid">
+                        <!-- Sectors will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <button id="profile-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="nextStep()" disabled>
+                    <span>Next Step</span> →
                 </button>
             </div>
         </div>
 
-        <!-- Step 3: Location -->
+        <!-- Step 2: Location -->
         <div id="location-screen" class="screen">
             <div class="screen-header">
-                <button class="back-btn" onclick="goBack()">← <span data-en="Back" data-hi="वापस">Back</span></button>
+                <button class="back-btn" onclick="goBack()">← <span>Back</span></button>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 100%"></div>
                 </div>
                 <div class="step-indicator">
-                    <span data-en="Step 3 of 3" data-hi="चरण 3 का 3">Step 3 of 3</span>
+                    <span>Step 2 of 2</span>
                 </div>
             </div>
             
             <div class="screen-content">
-                <h2 data-en="Where would you like to work?" data-hi="आप कहाँ काम करना चाहेंगे?">Where would you like to work?</h2>
+                <h2>Where would you like to work?</h2>
                 
                 <div class="location-options">
                     <div class="location-card" onclick="selectLocation('any')">
                         <div class="card-icon">🌍</div>
-                        <div class="card-title" data-en="Any Location" data-hi="कोई भी स्थान">Any Location</div>
-                        <div class="card-subtitle" data-en="Open to work anywhere" data-hi="कहीं भी काम करने को तैयार">Open to work anywhere</div>
+                        <div class="card-title">Any Location</div>
+                        <div class="card-subtitle">Open to work anywhere</div>
                     </div>
                     
                     <div class="location-card" onclick="selectLocation('specific')">
                         <div class="card-icon">📍</div>
-                        <div class="card-title" data-en="Specific Location" data-hi="विशिष्ट स्थान">Specific Location</div>
-                        <div class="card-subtitle" data-en="Choose your preferred state" data-hi="अपना पसंदीदा राज्य चुनें">Choose your preferred state</div>
+                        <div class="card-title">Specific Location</div>
+                        <div class="card-subtitle">Choose your preferred state</div>
                     </div>
                 </div>
 
                 <div id="state-selector" class="state-selector hidden">
-                    <label class="form-label" data-en="Select State" data-hi="राज्य चुनें">Select State</label>
+                    <label class="form-label">Select State</label>
                     <select class="form-control" id="state-dropdown">
-                        <option value="" data-en="Choose a state" data-hi="एक राज्य चुनें">Choose a state</option>
+                        <option value="">Choose a state</option>
                     </select>
                 </div>
 
                 <button id="location-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="getRecommendations()" disabled>
-                    <span data-en="Get Recommendations" data-hi="सुझाव पाएं">Get Recommendations</span> ✨
+                    <span>Get Recommendations</span> ✨
                 </button>
             </div>
         </div>
@@ -170,18 +198,22 @@
         <!-- Recommendations Screen -->
         <div id="recommendations-screen" class="screen">
             <div class="screen-header">
-                <button class="back-btn" onclick="startOver()">🏠 <span data-en="Start Over" data-hi="फिर से शुरू करें">Start Over</span></button>
-                <h2 data-en="Your Recommendations" data-hi="आपके लिए सुझाव">Your Recommendations</h2>
+                <button class="back-btn" onclick="startOver()">🏠 <span>Start Over</span></button>
+                <h2>Your Recommendations</h2>
             </div>
             
             <div class="screen-content">
+                <div class="user-summary" id="user-summary">
+                    <!-- User summary will be populated by JavaScript -->
+                </div>
+
                 <div class="recommendations-container" id="recommendations-container">
                     <!-- Recommendations will be populated by JavaScript -->
                 </div>
 
                 <div class="action-buttons">
                     <button class="btn btn--secondary btn--full-width" onclick="startOver()">
-                        <span data-en="Try Different Preferences" data-hi="अलग पसंद आज़माएं">Try Different Preferences</span>
+                        <span>Try Different Preferences</span>
                     </button>
                 </div>
             </div>
@@ -191,8 +223,8 @@
         <div id="loading-screen" class="screen loading-screen">
             <div class="loading-content">
                 <div class="loading-spinner">⏳</div>
-                <h2 data-en="Finding Perfect Internships for You..." data-hi="आपके लिए सही इंटर्नशिप खोज रहे हैं...">Finding Perfect Internships for You...</h2>
-                <p data-en="Please wait while we match your profile" data-hi="कृपया प्रतीक्षा करें जब तक हम आपकी प्रोफ़ाइल मिलाते हैं">Please wait while we match your profile</p>
+                <h2>Finding Perfect Internships for You...</h2>
+                <p>Please wait while we match your profile</p>
             </div>
         </div>
     </div>
