@@ -1,0 +1,51 @@
+
+COMPLETE PM INTERNSHIP DATASET SUMMARY:
+=====================================
+
+Total Records: 1000
+Qualifications: ['12th Pass', 'Diploma', 'Graduate']
+Streams: ['Arts', 'Commerce', 'Science', 'Vocational']
+Skills (34): ['Accounting', 'AutoCAD', 'Business Analytics', 'C++', 'CAD', 'Circuit Design', 'Communication', 'Data Analysis', 'Digital Marketing', 'Excel']... (showing first 10)
+Locations (30): ['Ahmedabad, Gujarat', 'Amritsar, Punjab', 'Bengaluru, Karnataka', 'Bhopal, Madhya Pradesh', 'Bhubaneswar, Odisha', 'Chandigarh, Chandigarh', 'Chennai, Tamil Nadu', 'Cochin, Kerala', 'Coimbatore, Tamil Nadu', 'Delhi, Delhi']... (showing first 10)
+
+Sample Records:
+
+Record 1:
+- Company: STEEL AUTHORITY OF INDIA LIMITED
+- Position: Customer Success Intern
+- Qualification: 12th Pass
+- Stream: Vocational
+- Skills: ['Time Management', 'PowerPoint', 'Financial Modeling']
+- Location: Bhopal, Madhya Pradesh
+
+Record 2:
+- Company: ICICI SECURITIES LIMITED
+- Position: Accounting Intern
+- Qualification: Graduate
+- Stream: Commerce
+- Skills: ['Digital Marketing', 'SQL', 'Financial Modeling']
+- Location: Bhopal, Madhya Pradesh
+
+Record 3:
+- Company: TATA CAPITAL HOUSING FINANCE LIMITED
+- Position: QA Intern
+- Qualification: Graduate
+- Stream: Commerce
+- Skills: ['Python', 'Problem Solving', 'SQL']
+- Location: Jaipur, Rajasthan
+
+Record 4:
+- Company: SUN PHARMACEUTICAL INDUSTRIES LIMITED
+- Position: Risk Analyst Intern
+- Qualification: Graduate
+- Stream: Commerce
+- Skills: ['PowerPoint', 'Excel', 'Digital Marketing']
+- Location: Chennai, Tamil Nadu
+
+Record 5:
+- Company: BAJAJ ALLIANZ LIFE INSURANCE COMPANY LIMITED
+- Position: Procurement Intern
+- Qualification: Graduate
+- Stream: Vocational
+- Skills: ['C++', 'Accounting', 'JavaScript']
+- Location: Indore, Madhya Pradesh

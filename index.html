@@ -3,199 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PM Internship Recommendations</title>
+    <title>PM Internship Portal - Government of India</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Welcome Screen -->
-        <div id="welcome-screen" class="screen active">
-            <div class="welcome-content">
-                <div class="logo-section">
-                    <h1 class="app-title">🇮🇳 PM Internship</h1>
-                    <p class="app-subtitle" data-en="Find Your Perfect Internship" data-hi="अपनी सही इंटर्नशिप खोजें">Find Your Perfect Internship</p>
-                </div>
-                
-                <div class="language-selector">
-                    <h3 data-en="Choose Language" data-hi="भाषा चुनें">Choose Language</h3>
-                    <div class="language-buttons">
-                        <button class="btn btn--primary language-btn" onclick="setLanguage('hi')">
-                            🗣️ हिंदी
-                        </button>
-                        <button class="btn btn--secondary language-btn" onclick="setLanguage('en')">
-                            🗣️ English
-                        </button>
-                    </div>
-                </div>
-
-                <div class="steps-preview">
-                    <h3 data-en="Simple 3 Steps" data-hi="सिर्फ 3 आसान कदम">Simple 3 Steps</h3>
-                    <div class="steps-grid">
-                        <div class="step-item">
-                            <div class="step-icon">📚</div>
-                            <span data-en="Education" data-hi="शिक्षा">Education</span>
-                        </div>
-                        <div class="step-item">
-                            <div class="step-icon">💪</div>
-                            <span data-en="Skills" data-hi="कौशल">Skills</span>
-                        </div>
-                        <div class="step-item">
-                            <div class="step-icon">📍</div>
-                            <span data-en="Location" data-hi="स्थान">Location</span>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn btn--primary btn--lg btn--full-width start-btn" onclick="startApplication()" data-en="Get Started" data-hi="शुरू करें">
-                    Get Started ▶️
-                </button>
-            </div>
-        </div>
-
-        <!-- Step 1: Education -->
-        <div id="education-screen" class="screen">
-            <div class="screen-header">
-                <button class="back-btn" onclick="goBack()">← <span data-en="Back" data-hi="वापस">Back</span></button>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 33%"></div>
-                </div>
-                <div class="step-indicator">
-                    <span data-en="Step 1 of 3" data-hi="चरण 1 का 3">Step 1 of 3</span>
-                </div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="nav-brand">
+                <h1>PM Internship Portal</h1>
+                <p>Government of India</p>
             </div>
             
-            <div class="screen-content">
-                <h2 data-en="What is your education level?" data-hi="आपकी शिक्षा का स्तर क्या है?">What is your education level?</h2>
-                
-                <div class="selection-grid">
-                    <div class="selection-card" onclick="selectEducation('10th')">
-                        <div class="card-icon">📖</div>
-                        <div class="card-title" data-en="10th Pass" data-hi="10वीं पास">10th Pass</div>
+            <button class="login-btn" id="loginBtn">Login</button>
+        </div>
+    </nav>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Navigation</h3>
+            <button class="close-btn" id="closeSidebar">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="#" class="sidebar-link">PM Internship Scheme</a>
+            <a href="#" class="sidebar-link">About Us</a>
+            <a href="#" class="sidebar-link">Contact</a>
+            <a href="#" class="sidebar-link">FAQ</a>
+            <a href="#" class="sidebar-link">Guidelines</a>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Homepage -->
+        <div class="page active" id="homepage">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span>🇮🇳</span>
+                        <span>Government Initiative</span>
                     </div>
-                    <div class="selection-card" onclick="selectEducation('12th')">
-                        <div class="card-icon">🎓</div>
-                        <div class="card-title" data-en="12th Pass" data-hi="12वीं पास">12th Pass</div>
+                    <h1>PM Internship Portal</h1>
+                    <h2>Find Your Perfect Internship Match</h2>
+                    <p>Connect with top companies and organizations across India. Our AI-powered system matches your qualifications and skills with the best internship opportunities.</p>
+                    <button class="btn btn--primary btn--lg" id="getStartedBtn">Get Started</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">1000+</span>
+                        <span class="stat-label">Internships</span>
                     </div>
-                    <div class="selection-card" onclick="selectEducation('iti')">
-                        <div class="card-icon">🔧</div>
-                        <div class="card-title" data-en="ITI/Diploma" data-hi="आईटीआई/डिप्लोमा">ITI/Diploma</div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Companies</span>
                     </div>
-                    <div class="selection-card" onclick="selectEducation('graduate')">
-                        <div class="card-icon">🎓</div>
-                        <div class="card-title" data-en="Graduate" data-hi="स्नातक">Graduate</div>
+                    <div class="stat-item">
+                        <span class="stat-number">30+</span>
+                        <span class="stat-label">Cities</span>
                     </div>
                 </div>
-
-                <button id="education-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="nextStep()" disabled>
-                    <span data-en="Next Step" data-hi="अगला कदम">Next Step</span> →
-                </button>
             </div>
         </div>
 
-        <!-- Step 2: Skills & Interests -->
-        <div id="skills-screen" class="screen">
-            <div class="screen-header">
-                <button class="back-btn" onclick="goBack()">← <span data-en="Back" data-hi="वापस">Back</span></button>
+        <!-- Login Page -->
+        <div class="page" id="loginPage">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2 id="authTitle">Login to Your Account</h2>
+                    <p id="authSubtitle">Access your personalized internship recommendations</p>
+                </div>
+                
+                <div class="auth-form">
+                    <!-- Login Form -->
+                    <form id="loginForm" class="form-section active">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                    </form>
+
+                    <!-- Signup Form -->
+                    <form id="signupForm" class="form-section">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" placeholder="Create a password" required>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Sign Up</button>
+                    </form>
+
+                    <div class="auth-divider">
+                        <span>or</span>
+                    </div>
+
+                    <button class="btn btn--outline btn--full-width google-btn">
+                        <span>🔍</span>
+                        Continue with Google
+                    </button>
+
+                    <div class="auth-toggle">
+                        <p id="authToggleText">Don't have an account? <button type="button" id="authToggleBtn">Sign up</button></p>
+                    </div>
+                </div>
+                
+                <button class="back-btn" id="backToHome">← Back to Home</button>
+            </div>
+        </div>
+
+        <!-- Step 1: Qualification -->
+        <div class="page" id="step1">
+            <div class="step-container">
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 66%"></div>
+                    <div class="progress-fill" style="width: 16.67%"></div>
                 </div>
-                <div class="step-indicator">
-                    <span data-en="Step 2 of 3" data-hi="चरण 2 का 3">Step 2 of 3</span>
+                <div class="step-header">
+                    <h2>What is your highest qualification?</h2>
+                    <p>Select your current educational qualification</p>
                 </div>
-            </div>
-            
-            <div class="screen-content">
-                <h2 data-en="What are your skills?" data-hi="आपके कौशल क्या हैं?">What are your skills?</h2>
-                <p class="subtitle" data-en="Select all that apply" data-hi="जो लागू हों सभी चुनें">Select all that apply</p>
-                
-                <div class="skills-grid" id="skills-grid">
-                    <!-- Skills will be populated by JavaScript -->
+                <div class="selection-grid" id="qualificationOptions">
+                    <!-- Populated dynamically -->
                 </div>
-
-                <h2 data-en="Which sectors interest you?" data-hi="कौन से क्षेत्र आपको दिलचस्प लगते हैं?">Which sectors interest you?</h2>
-                <p class="subtitle" data-en="Select up to 3 sectors" data-hi="अधिकतम 3 क्षेत्र चुनें">Select up to 3 sectors</p>
-                
-                <div class="sectors-grid" id="sectors-grid">
-                    <!-- Sectors will be populated by JavaScript -->
+                <div class="step-navigation">
+                    <button class="btn btn--outline" id="backBtn1">← Back</button>
                 </div>
-
-                <button id="skills-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="nextStep()" disabled>
-                    <span data-en="Next Step" data-hi="अगला कदम">Next Step</span> →
-                </button>
             </div>
         </div>
 
-        <!-- Step 3: Location -->
-        <div id="location-screen" class="screen">
-            <div class="screen-header">
-                <button class="back-btn" onclick="goBack()">← <span data-en="Back" data-hi="वापस">Back</span></button>
+        <!-- Step 2: Stream -->
+        <div class="page" id="step2">
+            <div class="step-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 33.33%"></div>
+                </div>
+                <div class="step-header">
+                    <h2>What was your stream/field of study?</h2>
+                    <p>Select your educational stream</p>
+                </div>
+                <div class="selection-grid" id="streamOptions">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" id="backBtn2">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Degree (Conditional) -->
+        <div class="page" id="step3">
+            <div class="step-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 50%"></div>
+                </div>
+                <div class="step-header">
+                    <h2>What is your degree?</h2>
+                    <p>Select your specific degree</p>
+                </div>
+                <div class="selection-grid" id="degreeOptions">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" id="backBtn3">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Degree Stream (Conditional) -->
+        <div class="page" id="step4">
+            <div class="step-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 66.67%"></div>
+                </div>
+                <div class="step-header">
+                    <h2>What is your specialization?</h2>
+                    <p>Select your degree specialization</p>
+                </div>
+                <div class="selection-grid" id="degreeStreamOptions">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" id="backBtn4">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Skills -->
+        <div class="page" id="step5">
+            <div class="step-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 83.33%"></div>
+                </div>
+                <div class="step-header">
+                    <h2>Select your key skills</h2>
+                    <p>Choose up to 3 skills that best describe your abilities</p>
+                    <div class="skills-counter">
+                        <span id="skillsCount">0</span>/3 selected
+                    </div>
+                </div>
+                <div class="skills-grid" id="skillsOptions">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" id="backBtn5">← Back</button>
+                    <button class="btn btn--primary" id="nextBtn5" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 6: Location -->
+        <div class="page" id="step6">
+            <div class="step-container">
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 100%"></div>
                 </div>
-                <div class="step-indicator">
-                    <span data-en="Step 3 of 3" data-hi="चरण 3 का 3">Step 3 of 3</span>
+                <div class="step-header">
+                    <h2>Where would you like to work?</h2>
+                    <p>Select your preferred work location</p>
                 </div>
-            </div>
-            
-            <div class="screen-content">
-                <h2 data-en="Where would you like to work?" data-hi="आप कहाँ काम करना चाहेंगे?">Where would you like to work?</h2>
-                
-                <div class="location-options">
-                    <div class="location-card" onclick="selectLocation('any')">
-                        <div class="card-icon">🌍</div>
-                        <div class="card-title" data-en="Any Location" data-hi="कोई भी स्थान">Any Location</div>
-                        <div class="card-subtitle" data-en="Open to work anywhere" data-hi="कहीं भी काम करने को तैयार">Open to work anywhere</div>
+                <div class="location-selector">
+                    <!-- Prominent "Anywhere" Option -->
+                    <div class="location-anywhere-card" id="anywhereOption">
+                        <div class="anywhere-icon">🌍</div>
+                        <h3>Open to work anywhere</h3>
+                        <p>Maximum opportunities, any location</p>
+                        <div class="anywhere-badge">Most Flexible</div>
                     </div>
                     
-                    <div class="location-card" onclick="selectLocation('specific')">
-                        <div class="card-icon">📍</div>
-                        <div class="card-title" data-en="Specific Location" data-hi="विशिष्ट स्थान">Specific Location</div>
-                        <div class="card-subtitle" data-en="Choose your preferred state" data-hi="अपना पसंदीदा राज्य चुनें">Choose your preferred state</div>
+                    <div class="location-divider">
+                        <span>or choose a specific location</span>
+                    </div>
+                    
+                    <input type="text" class="form-control" id="locationSearch" placeholder="Search for a city...">
+                    <div class="location-list" id="locationOptions">
+                        <!-- Populated dynamically -->
                     </div>
                 </div>
-
-                <div id="state-selector" class="state-selector hidden">
-                    <label class="form-label" data-en="Select State" data-hi="राज्य चुनें">Select State</label>
-                    <select class="form-control" id="state-dropdown">
-                        <option value="" data-en="Choose a state" data-hi="एक राज्य चुनें">Choose a state</option>
-                    </select>
-                </div>
-
-                <button id="location-next" class="btn btn--primary btn--lg btn--full-width next-btn" onclick="getRecommendations()" disabled>
-                    <span data-en="Get Recommendations" data-hi="सुझाव पाएं">Get Recommendations</span> ✨
-                </button>
-            </div>
-        </div>
-
-        <!-- Recommendations Screen -->
-        <div id="recommendations-screen" class="screen">
-            <div class="screen-header">
-                <button class="back-btn" onclick="startOver()">🏠 <span data-en="Start Over" data-hi="फिर से शुरू करें">Start Over</span></button>
-                <h2 data-en="Your Recommendations" data-hi="आपके लिए सुझाव">Your Recommendations</h2>
-            </div>
-            
-            <div class="screen-content">
-                <div class="recommendations-container" id="recommendations-container">
-                    <!-- Recommendations will be populated by JavaScript -->
-                </div>
-
-                <div class="action-buttons">
-                    <button class="btn btn--secondary btn--full-width" onclick="startOver()">
-                        <span data-en="Try Different Preferences" data-hi="अलग पसंद आज़माएं">Try Different Preferences</span>
-                    </button>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" id="backBtn6">← Back</button>
                 </div>
             </div>
         </div>
 
-        <!-- Loading Screen -->
-        <div id="loading-screen" class="screen loading-screen">
-            <div class="loading-content">
-                <div class="loading-spinner">⏳</div>
-                <h2 data-en="Finding Perfect Internships for You..." data-hi="आपके लिए सही इंटर्नशिप खोज रहे हैं...">Finding Perfect Internships for You...</h2>
-                <p data-en="Please wait while we match your profile" data-hi="कृपया प्रतीक्षा करें जब तक हम आपकी प्रोफ़ाइल मिलाते हैं">Please wait while we match your profile</p>
+        <!-- Loading Page -->
+        <div class="page" id="loadingPage">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <h2>Finding your perfect matches...</h2>
+                <p>Our AI is analyzing your profile against thousands of internship opportunities</p>
+                <div class="loading-steps">
+                    <div class="loading-step active">Analyzing qualifications</div>
+                    <div class="loading-step">Matching skills</div>
+                    <div class="loading-step">Finding locations</div>
+                    <div class="loading-step">Calculating compatibility</div>
+                </div>
             </div>
         </div>
-    </div>
+
+        <!-- Results Page -->
+        <div class="page" id="resultsPage">
+            <div class="results-container">
+                <div class="results-header">
+                    <h2>Your Internship Recommendations</h2>
+                    <p id="resultsDescription">Based on your profile, here are the best matches we found for you</p>
+                </div>
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="alternatives-section" id="alternativesSection" style="display: none;">
+                    <div class="alternatives-header">
+                        <h3>Consider These Alternatives</h3>
+                        <p>These opportunities might also be interesting for you</p>
+                    </div>
+                    <div class="alternatives-grid" id="alternativesGrid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+                <div class="results-actions">
+                    <button class="btn btn--outline" id="startOverBtn">Start Over</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="app.js"></script>
 </body>
