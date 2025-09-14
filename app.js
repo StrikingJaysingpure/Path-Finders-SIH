@@ -1,802 +1,903 @@
-// PM Internship Recommendation App - JavaScript
-class InternshipApp {
+// PM Internship Portal - Enhanced Application Logic
+class PMInternshipPortal {
     constructor() {
-        this.currentScreen = 'welcome-screen';
-        this.currentLanguage = 'en';
+        this.currentPage = 'homepage';
         this.userProfile = {
-            education: null,
+            qualification: null,
+            stream: null,
+            degree: null,
+            degreeStream: null,
             skills: [],
-            sectors: [],
             location: null,
-            state: null
+            locationFlexible: false
         };
+        this.currentStep = 1;
+        this.maxStep = 6;
+        this.dataLoaded = false;
         
         this.init();
     }
 
     init() {
-        this.populateSkillsGrid();
-        this.populateSectorsGrid();
-        this.populateStateDropdown();
         this.setupEventListeners();
-    }
-
-    // Sample data
-    sampleInternships = [
-        {
-            id: 1,
-            title: "Customer Service Intern",
-            company: "Bharti Airtel",
-            location: "Delhi",
-            state: "Delhi",
-            sector: "Telecommunications",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Communication", "Hindi", "English", "Computer Basics"],
-            education_required: "12th Pass",
-            description: "Handle customer queries and provide support"
-        },
-        {
-            id: 2,
-            title: "Banking Assistant Intern",
-            company: "State Bank of India",
-            location: "Mumbai",
-            state: "Maharashtra", 
-            sector: "Banking",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Mathematics", "Communication", "Computer Basics"],
-            education_required: "12th Pass",
-            description: "Assist customers with basic banking operations"
-        },
-        {
-            id: 3,
-            title: "Data Entry Intern",
-            company: "Wipro Technologies",
-            location: "Bangalore",
-            state: "Karnataka",
-            sector: "Technology",
-            duration: "12 months", 
-            stipend: 5000,
-            skills_required: ["Computer Skills", "MS Office", "Attention to Detail"],
-            education_required: "12th Pass",
-            description: "Enter and manage data in computer systems"
-        },
-        {
-            id: 4,
-            title: "Healthcare Assistant Intern",
-            company: "Apollo Hospitals",
-            location: "Chennai",
-            state: "Tamil Nadu",
-            sector: "Healthcare",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Communication", "Empathy", "Basic Health Knowledge"],
-            education_required: "12th Pass",
-            description: "Assist medical staff and support patients"
-        },
-        {
-            id: 5,
-            title: "Sales Support Intern",
-            company: "Reliance Retail",
-            location: "Ahmedabad",
-            state: "Gujarat",
-            sector: "Retail",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Communication", "Sales", "Customer Service"],
-            education_required: "12th Pass", 
-            description: "Support sales team and help customers"
-        },
-        {
-            id: 6,
-            title: "Manufacturing Trainee",
-            company: "Tata Motors",
-            location: "Pune",
-            state: "Maharashtra",
-            sector: "Manufacturing", 
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Technical Skills", "Safety Awareness", "Teamwork"],
-            education_required: "ITI/Diploma",
-            description: "Learn manufacturing processes and quality control"
-        },
-        {
-            id: 7,
-            title: "Digital Marketing Assistant",
-            company: "Paytm",
-            location: "Noida", 
-            state: "Uttar Pradesh",
-            sector: "Technology",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Social Media", "Communication", "Computer Skills"],
-            education_required: "Graduate",
-            description: "Assist with social media and online marketing"
-        },
-        {
-            id: 8,
-            title: "Logistics Coordinator Intern",
-            company: "Amazon India",
-            location: "Hyderabad",
-            state: "Telangana",
-            sector: "E-commerce",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Organization", "Communication", "Problem Solving"],
-            education_required: "12th Pass",
-            description: "Coordinate deliveries and manage logistics"
-        },
-        {
-            id: 9,
-            title: "Teaching Assistant Intern",
-            company: "Government School",
-            location: "Jaipur",
-            state: "Rajasthan",
-            sector: "Education",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Teaching", "Patience", "Communication", "Hindi"],
-            education_required: "Graduate",
-            description: "Assist teachers and support student learning"
-        },
-        {
-            id: 10,
-            title: "Agriculture Extension Intern", 
-            company: "IFFCO",
-            location: "Indore",
-            state: "Madhya Pradesh",
-            sector: "Agriculture",
-            duration: "12 months",
-            stipend: 5000,
-            skills_required: ["Agriculture Knowledge", "Communication", "Field Work"],
-            education_required: "12th Pass",
-            description: "Help farmers with modern farming techniques"
-        }
-    ];
-
-    skillsOptions = [
-        {id: "communication", name: "Communication", nameHi: "संवाद", icon: "💬"},
-        {id: "computer", name: "Computer Skills", nameHi: "कंप्यूटर कौशल", icon: "💻"},
-        {id: "hindi", name: "Hindi", nameHi: "हिंदी", icon: "🗣️"},
-        {id: "english", name: "English", nameHi: "अंग्रेजी", icon: "📝"},
-        {id: "mathematics", name: "Mathematics", nameHi: "गणित", icon: "🔢"},
-        {id: "sales", name: "Sales", nameHi: "बिक्री", icon: "🤝"},
-        {id: "customer_service", name: "Customer Service", nameHi: "ग्राहक सेवा", icon: "👥"},
-        {id: "technical", name: "Technical Skills", nameHi: "तकनीकी कौशल", icon: "🔧"},
-        {id: "teaching", name: "Teaching", nameHi: "शिक्षण", icon: "📚"},
-        {id: "healthcare", name: "Healthcare", nameHi: "स्वास्थ्य सेवा", icon: "🏥"},
-        {id: "agriculture", name: "Agriculture", nameHi: "कृषि", icon: "🌱"},
-        {id: "organization", name: "Organization", nameHi: "संगठन", icon: "📋"}
-    ];
-
-    sectors = [
-        {id: "technology", name: "Technology", nameHi: "प्रौद्योगिकी", icon: "💻"},
-        {id: "healthcare", name: "Healthcare", nameHi: "स्वास्थ्य सेवा", icon: "🏥"},
-        {id: "banking", name: "Banking", nameHi: "बैंकिंग", icon: "🏦"},
-        {id: "retail", name: "Retail", nameHi: "खुदरा", icon: "🛒"},
-        {id: "education", name: "Education", nameHi: "शिक्षा", icon: "📚"},
-        {id: "manufacturing", name: "Manufacturing", nameHi: "विनिर्माण", icon: "🏭"},
-        {id: "agriculture", name: "Agriculture", nameHi: "कृषि", icon: "🌾"},
-        {id: "telecommunications", name: "Telecommunications", nameHi: "दूरसंचार", icon: "📱"},
-        {id: "ecommerce", name: "E-commerce", nameHi: "ई-कॉमर्स", icon: "📦"}
-    ];
-
-    states = [
-        "Delhi", "Maharashtra", "Karnataka", "Tamil Nadu", "Gujarat", "Uttar Pradesh", 
-        "Telangana", "Rajasthan", "Madhya Pradesh", "West Bengal", "Haryana", "Punjab"
-    ];
-
-    // Language management
-    setLanguage(lang) {
-        this.currentLanguage = lang;
-        this.updateLanguageDisplay();
-        
-        // Auto-proceed to first step after language selection
-        setTimeout(() => {
-            this.showScreen('education-screen');
-        }, 500);
-    }
-
-    updateLanguageDisplay() {
-        const elements = document.querySelectorAll('[data-en][data-hi]');
-        elements.forEach(element => {
-            const text = this.currentLanguage === 'hi' ? element.getAttribute('data-hi') : element.getAttribute('data-en');
-            element.textContent = text;
-        });
-
-        // Update skills and sectors with language-specific names
-        this.populateSkillsGrid();
-        this.populateSectorsGrid();
-    }
-
-    // Screen navigation
-    showScreen(screenId) {
-        // Hide all screens
-        document.querySelectorAll('.screen').forEach(screen => {
-            screen.classList.remove('active');
-        });
-        
-        // Show target screen
-        document.getElementById(screenId).classList.add('active');
-        this.currentScreen = screenId;
-
-        // Scroll to top
-        window.scrollTo(0, 0);
-    }
-
-    startApplication() {
-        this.showScreen('education-screen');
-    }
-
-    goBack() {
-        const screens = ['welcome-screen', 'education-screen', 'skills-screen', 'location-screen'];
-        const currentIndex = screens.indexOf(this.currentScreen);
-        if (currentIndex > 0) {
-            this.showScreen(screens[currentIndex - 1]);
-        }
-    }
-
-    nextStep() {
-        switch(this.currentScreen) {
-            case 'education-screen':
-                this.showScreen('skills-screen');
-                break;
-            case 'skills-screen':
-                this.showScreen('location-screen');
-                break;
-        }
-    }
-
-    startOver() {
-        this.userProfile = {
-            education: null,
-            skills: [],
-            sectors: [],
-            location: null,
-            state: null
-        };
-        
-        // Reset form selections
-        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-        document.querySelectorAll('.next-btn').forEach(btn => btn.disabled = true);
-        document.getElementById('state-selector').classList.add('hidden');
-        document.getElementById('state-dropdown').value = '';
-        
-        this.showScreen('welcome-screen');
-    }
-
-    // Form population
-    populateSkillsGrid() {
-        const grid = document.getElementById('skills-grid');
-        if (!grid) return;
-        
-        grid.innerHTML = '';
-        
-        this.skillsOptions.forEach(skill => {
-            const skillElement = document.createElement('div');
-            skillElement.className = 'skill-item';
-            skillElement.setAttribute('data-skill', skill.id);
-            skillElement.setAttribute('tabindex', '0');
-            skillElement.innerHTML = `
-                <div class="skill-icon">${skill.icon}</div>
-                <div class="skill-name">${this.currentLanguage === 'hi' ? skill.nameHi : skill.name}</div>
-            `;
-            
-            // Add click handler
-            skillElement.addEventListener('click', () => this.toggleSkill(skill.id, skillElement));
-            skillElement.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.toggleSkill(skill.id, skillElement);
-                }
-            });
-            
-            grid.appendChild(skillElement);
-        });
-    }
-
-    populateSectorsGrid() {
-        const grid = document.getElementById('sectors-grid');
-        if (!grid) return;
-        
-        grid.innerHTML = '';
-        
-        this.sectors.forEach(sector => {
-            const sectorElement = document.createElement('div');
-            sectorElement.className = 'sector-item';
-            sectorElement.setAttribute('data-sector', sector.id);
-            sectorElement.setAttribute('tabindex', '0');
-            sectorElement.innerHTML = `
-                <div class="sector-icon">${sector.icon}</div>
-                <div class="sector-name">${this.currentLanguage === 'hi' ? sector.nameHi : sector.name}</div>
-            `;
-            
-            // Add click handler
-            sectorElement.addEventListener('click', () => this.toggleSector(sector.id, sectorElement));
-            sectorElement.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.toggleSector(sector.id, sectorElement);
-                }
-            });
-            
-            grid.appendChild(sectorElement);
-        });
-    }
-
-    populateStateDropdown() {
-        const dropdown = document.getElementById('state-dropdown');
-        if (!dropdown) return;
-        
-        // Clear existing options except the first one
-        dropdown.innerHTML = '<option value="">Choose a state</option>';
-        
-        this.states.forEach(state => {
-            const option = document.createElement('option');
-            option.value = state;
-            option.textContent = state;
-            dropdown.appendChild(option);
-        });
-    }
-
-    // Form interactions
-    selectEducation(level) {
-        // Remove previous selection
-        document.querySelectorAll('#education-screen .selection-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        
-        // Add selection to clicked card  
-        const clickedCard = document.querySelector(`#education-screen .selection-card[onclick*="${level}"]`) || 
-                            event.target.closest('.selection-card');
-        if (clickedCard) {
-            clickedCard.classList.add('selected');
-        }
-        
-        // Update user profile
-        this.userProfile.education = level;
-        
-        // Enable next button
-        const nextBtn = document.getElementById('education-next');
-        if (nextBtn) {
-            nextBtn.disabled = false;
-        }
-    }
-
-    toggleSkill(skillId, element) {
-        if (element.classList.contains('selected')) {
-            element.classList.remove('selected');
-            this.userProfile.skills = this.userProfile.skills.filter(s => s !== skillId);
-        } else {
-            element.classList.add('selected');
-            this.userProfile.skills.push(skillId);
-        }
-        
-        console.log('Skills updated:', this.userProfile.skills); // Debug log
-        this.updateSkillsNextButton();
-    }
-
-    toggleSector(sectorId, element) {
-        if (element.classList.contains('selected')) {
-            element.classList.remove('selected');
-            this.userProfile.sectors = this.userProfile.sectors.filter(s => s !== sectorId);
-        } else if (this.userProfile.sectors.length < 3) {
-            element.classList.add('selected');
-            this.userProfile.sectors.push(sectorId);
-        } else {
-            // Show message about 3 sector limit
-            this.showTemporaryMessage(this.currentLanguage === 'hi' ? 
-                'केवल 3 क्षेत्र चुन सकते हैं' : 'You can only select 3 sectors');
-            return;
-        }
-        
-        console.log('Sectors updated:', this.userProfile.sectors); // Debug log
-        this.updateSkillsNextButton();
-    }
-
-    updateSkillsNextButton() {
-        const hasSkills = this.userProfile.skills.length > 0;
-        const hasSectors = this.userProfile.sectors.length > 0;
-        const nextBtn = document.getElementById('skills-next');
-        
-        console.log('Updating button - Skills:', hasSkills, 'Sectors:', hasSectors); // Debug log
-        
-        if (nextBtn) {
-            nextBtn.disabled = !(hasSkills && hasSectors);
-            console.log('Button disabled:', nextBtn.disabled); // Debug log
-        }
-    }
-
-    selectLocation(type) {
-        // Remove previous selection
-        document.querySelectorAll('.location-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        
-        // Add selection to clicked card
-        const clickedCard = event.target.closest('.location-card');
-        if (clickedCard) {
-            clickedCard.classList.add('selected');
-        }
-        
-        // Update user profile
-        this.userProfile.location = type;
-        
-        const stateSelector = document.getElementById('state-selector');
-        const nextBtn = document.getElementById('location-next');
-        
-        if (type === 'specific') {
-            if (stateSelector) stateSelector.classList.remove('hidden');
-            if (nextBtn) nextBtn.disabled = true;
-        } else {
-            if (stateSelector) stateSelector.classList.add('hidden');
-            if (nextBtn) nextBtn.disabled = false;
-            this.userProfile.state = null;
-        }
+        this.setupFallbackData();
+        this.loadDataAndInitialize();
     }
 
     setupEventListeners() {
-        // State dropdown change
-        const stateDropdown = document.getElementById('state-dropdown');
-        if (stateDropdown) {
-            stateDropdown.addEventListener('change', (e) => {
-                this.userProfile.state = e.target.value;
-                const nextBtn = document.getElementById('location-next');
-                if (nextBtn) {
-                    nextBtn.disabled = !e.target.value;
-                }
+        // Navigation
+        document.getElementById('hamburgerBtn').addEventListener('click', () => this.toggleSidebar());
+        document.getElementById('closeSidebar').addEventListener('click', () => this.closeSidebar());
+        document.getElementById('sidebarOverlay').addEventListener('click', () => this.closeSidebar());
+        
+        // Authentication
+        document.getElementById('loginBtn').addEventListener('click', () => this.showPage('loginPage'));
+        document.getElementById('backToHome').addEventListener('click', () => this.showPage('homepage'));
+        document.getElementById('authToggleBtn').addEventListener('click', () => this.toggleAuthMode());
+        
+        // Main workflow
+        document.getElementById('getStartedBtn').addEventListener('click', () => this.startWorkflow());
+        
+        // Back buttons
+        document.getElementById('backBtn1').addEventListener('click', () => this.showPage('homepage'));
+        document.getElementById('backBtn2').addEventListener('click', () => this.goToStep(1));
+        document.getElementById('backBtn3').addEventListener('click', () => this.goToStep(2));
+        document.getElementById('backBtn4').addEventListener('click', () => this.goToStep(3));
+        document.getElementById('backBtn5').addEventListener('click', () => this.goToStep(4));
+        document.getElementById('backBtn6').addEventListener('click', () => this.goToStep(5));
+        
+        // Skills next button
+        document.getElementById('nextBtn5').addEventListener('click', () => this.goToStep(6));
+        
+        // Start over button
+        document.getElementById('startOverBtn').addEventListener('click', () => this.resetAndStart());
+        
+        // Location search
+        document.getElementById('locationSearch').addEventListener('input', (e) => this.filterLocations(e.target.value));
+
+        // Anywhere option
+        document.getElementById('anywhereOption').addEventListener('click', () => this.selectAnywhereLocation());
+
+        // Sidebar navigation links
+        this.setupSidebarNavigation();
+    }
+
+    setupSidebarNavigation() {
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeSidebar();
+                
+                const linkText = link.textContent;
+                setTimeout(() => {
+                    alert(`${linkText} page - This would normally navigate to detailed information about ${linkText.toLowerCase()}. This is a prototype demonstration.`);
+                }, 300);
             });
-        }
-    }
-
-    showTemporaryMessage(message) {
-        // Create temporary message element
-        const messageEl = document.createElement('div');
-        messageEl.className = 'temporary-message';
-        messageEl.textContent = message;
-        messageEl.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--color-primary);
-            color: var(--color-btn-primary-text);
-            padding: var(--space-16) var(--space-24);
-            border-radius: var(--radius-lg);
-            z-index: 1000;
-            font-weight: var(--font-weight-medium);
-        `;
-        
-        document.body.appendChild(messageEl);
-        
-        setTimeout(() => {
-            if (document.body.contains(messageEl)) {
-                document.body.removeChild(messageEl);
-            }
-        }, 2000);
-    }
-
-    // Recommendation logic
-    async getRecommendations() {
-        this.showScreen('loading-screen');
-        
-        // Simulate processing time
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        const recommendations = this.calculateRecommendations();
-        this.displayRecommendations(recommendations);
-        this.showScreen('recommendations-screen');
-    }
-
-    calculateRecommendations() {
-        const scoredInternships = this.sampleInternships.map(internship => {
-            let score = 0;
-            
-            // Location matching (40% weight)
-            score += this.calculateLocationScore(internship) * 0.4;
-            
-            // Education matching (25% weight)  
-            score += this.calculateEducationScore(internship) * 0.25;
-            
-            // Skills matching (20% weight)
-            score += this.calculateSkillsScore(internship) * 0.2;
-            
-            // Sector matching (15% weight)
-            score += this.calculateSectorScore(internship) * 0.15;
-            
-            return { ...internship, score };
         });
-
-        // Sort by score and return top 5
-        return scoredInternships
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 5);
     }
 
-    calculateLocationScore(internship) {
-        if (this.userProfile.location === 'any') {
-            return 70; // Any location preference
-        }
-        
-        if (this.userProfile.state === internship.state) {
-            return 100; // Exact state match
-        }
-        
-        // Check nearby states (simplified)
-        const nearbyStates = {
-            'Delhi': ['Haryana', 'Uttar Pradesh'],
-            'Maharashtra': ['Gujarat', 'Madhya Pradesh'],
-            'Karnataka': ['Tamil Nadu', 'Telangana'],
-            'Gujarat': ['Maharashtra', 'Rajasthan']
-        };
-        
-        const userNearbyStates = nearbyStates[this.userProfile.state] || [];
-        if (userNearbyStates.includes(internship.state)) {
-            return 60; // Nearby state
-        }
-        
-        return 20; // Different state
-    }
-
-    calculateEducationScore(internship) {
-        const educationLevels = {
-            '10th': 1,
-            '12th': 2,
-            'iti': 2.5,
-            'graduate': 3
-        };
-        
-        const userLevel = educationLevels[this.userProfile.education] || 0;
-        const requiredLevel = educationLevels[internship.education_required.toLowerCase().replace('th pass', 'th').replace('/diploma', '')] || 0;
-        
-        if (userLevel >= requiredLevel) {
-            return userLevel > requiredLevel ? 80 : 100; // Meets or exceeds requirement
-        }
-        
-        return 0; // Underqualified
-    }
-
-    calculateSkillsScore(internship) {
-        if (!internship.skills_required || this.userProfile.skills.length === 0) {
-            return 0;
-        }
-        
-        let skillScore = 0;
-        let totalSkillsChecked = 0;
-        
-        // Normalize skills for matching
-        const normalizeSkill = (skill) => skill.toLowerCase().replace(/\s+/g, '');
-        const userSkillsNormalized = this.userProfile.skills.map(normalizeSkill);
-        
-        internship.skills_required.forEach(requiredSkill => {
-            const requiredNormalized = normalizeSkill(requiredSkill);
-            totalSkillsChecked++;
+    async loadDataAndInitialize() {
+        try {
+            let attempts = 0;
+            const maxAttempts = 50;
             
-            // Direct match
-            if (userSkillsNormalized.includes(requiredNormalized) || 
-                requiredNormalized.includes('communication') && userSkillsNormalized.includes('communication') ||
-                requiredNormalized.includes('computer') && userSkillsNormalized.includes('computer') ||
-                requiredNormalized.includes('hindi') && userSkillsNormalized.includes('hindi') ||
-                requiredNormalized.includes('english') && userSkillsNormalized.includes('english')) {
-                skillScore += 100;
+            const waitForData = () => {
+                return new Promise((resolve) => {
+                    const checkData = () => {
+                        attempts++;
+                        if (typeof window.internshipData !== 'undefined' && window.internshipData.length > 0) {
+                            resolve(true);
+                        } else if (attempts >= maxAttempts) {
+                            resolve(false);
+                        } else {
+                            setTimeout(checkData, 100);
+                        }
+                    };
+                    checkData();
+                });
+            };
+
+            const dataLoaded = await waitForData();
+            
+            if (dataLoaded) {
+                this.internshipData = window.internshipData;
+                console.log('External data loaded:', this.internshipData.length, 'internships');
+                this.extractOptionsFromData();
+            } else {
+                console.log('Using fallback data - external data not available');
             }
-            // Related skills
-            else if ((requiredNormalized.includes('technical') && userSkillsNormalized.includes('computer')) ||
-                     (requiredNormalized.includes('customer') && userSkillsNormalized.includes('communication')) ||
-                     (requiredNormalized.includes('office') && userSkillsNormalized.includes('computer'))) {
-                skillScore += 60;
-            }
-            // Transferable skills
-            else if (userSkillsNormalized.includes('communication') || 
-                     userSkillsNormalized.includes('computer') ||
-                     userSkillsNormalized.includes('organization')) {
-                skillScore += 40;
-            }
+            
+            this.dataLoaded = true;
+            this.populateInitialOptions();
+            
+        } catch (error) {
+            console.error('Error loading data:', error);
+            this.dataLoaded = true;
+            this.populateInitialOptions();
+        }
+    }
+
+    extractOptionsFromData() {
+        if (!this.internshipData || !Array.isArray(this.internshipData)) {
+            console.log('Invalid data structure, using fallback');
+            return;
+        }
+
+        const data = this.internshipData;
+        
+        // Extract unique qualifications
+        this.qualifications = [...new Set(data.map(item => item.qualification))].filter(Boolean);
+        
+        // Extract unique streams  
+        this.streams = [...new Set(data.map(item => item.stream))].filter(Boolean);
+        
+        // Extract unique degrees by qualification
+        this.degrees = {};
+        this.qualifications.forEach(qual => {
+            this.degrees[qual] = [...new Set(
+                data.filter(item => item.qualification === qual)
+                    .map(item => item.degree)
+                    .filter(Boolean)
+            )];
         });
         
-        return totalSkillsChecked > 0 ? skillScore / totalSkillsChecked : 0;
+        // Extract unique degree streams
+        this.degreeStreams = [...new Set(data.map(item => item.degreeStream))].filter(Boolean);
+        
+        // Extract unique skills
+        const allSkills = [];
+        data.forEach(item => {
+            if (item.skills && Array.isArray(item.skills)) {
+                allSkills.push(...item.skills);
+            }
+        });
+        this.skills = [...new Set(allSkills)].filter(Boolean);
+        
+        // Extract unique locations
+        this.locations = [...new Set(data.map(item => item.location))].filter(Boolean);
+        
+        console.log('Extracted options:', {
+            qualifications: this.qualifications.length,
+            streams: this.streams.length,
+            skills: this.skills.length,
+            locations: this.locations.length
+        });
     }
 
-    calculateSectorScore(internship) {
-        if (this.userProfile.sectors.length === 0) {
-            return 40; // General interest
+    setupFallbackData() {
+        // Set up fallback data from the provided JSON
+        this.qualifications = ["12th Pass", "Diploma", "Graduate"];
+        this.streams = ["Arts", "Commerce", "Science", "Vocational"];
+        this.degrees = {
+            "12th Pass": [],
+            "Diploma": ["ITI", "Diploma"],
+            "Graduate": ["B.A.", "B.Com", "B.E.", "B.Tech", "BBA", "BCA", "B.Sc.", "B.Pharm"]
+        };
+        this.degreeStreams = ["Accounting", "Biotechnology", "Chemical Engineering", "Civil Engineering", "Computer Science", "Data Science", "Economics", "Electrical Engineering", "Electronics", "Finance", "Human Resources", "Information Technology", "Marketing", "Mathematics", "Mechanical Engineering", "Operations", "Pharmaceutical Sciences", "Physics", "Statistics", "Supply Chain"];
+        this.skills = ["Accounting", "AutoCAD", "Business Analytics", "C++", "CAD", "Circuit Design", "Communication", "Data Analysis", "Digital Marketing", "Excel", "Financial Modeling", "HTML/CSS", "Java", "JavaScript", "MATLAB", "MS Office", "Machine Learning", "Market Research", "PLC", "Power BI", "PowerPoint", "Problem Solving", "Python", "Quality Control", "R", "SQL", "Salesforce", "Six Sigma", "SolidWorks", "Statistics", "Tableau", "Teamwork", "Thermodynamics", "Time Management"];
+        this.locations = ["Ahmedabad, Gujarat", "Amritsar, Punjab", "Bengaluru, Karnataka", "Bhopal, Madhya Pradesh", "Bhubaneswar, Odisha", "Chandigarh, Chandigarh", "Chennai, Tamil Nadu", "Cochin, Kerala", "Coimbatore, Tamil Nadu", "Delhi, Delhi", "Gurugram, Haryana", "Hyderabad, Telangana", "Indore, Madhya Pradesh", "Jaipur, Rajasthan", "Kolkata, West Bengal", "Lucknow, Uttar Pradesh", "Ludhiana, Punjab", "Mumbai, Maharashtra", "Nagpur, Maharashtra", "Noida, Uttar Pradesh", "Patna, Bihar", "Pune, Maharashtra", "Raipur, Chhattisgarh", "Ranchi, Jharkhand", "Surat, Gujarat", "Trivandrum, Kerala", "Vadodara, Gujarat", "Vijayawada, Andhra Pradesh", "Visakhapatnam, Andhra Pradesh"];
+        
+        // Enhanced sample internship data with more variety
+        this.internshipData = [
+            {id: 1, qualification: "Graduate", stream: "Commerce", degree: "BCA", degreeStream: "Computer Science", location: "Jaipur, Rajasthan", company: "TATA CONSULTANCY SERVICES LIMITED", position: "Software Development Intern", skills: ["Python", "Problem Solving", "SQL"]},
+            {id: 2, qualification: "12th Pass", stream: "Science", degree: null, degreeStream: null, location: "Mumbai, Maharashtra", company: "WIPRO LIMITED", position: "Operations Intern", skills: ["Java", "Market Research", "MS Office"]},
+            {id: 3, qualification: "Graduate", stream: "Commerce", degree: "BBA", degreeStream: "Finance", location: "Bhopal, Madhya Pradesh", company: "ICICI SECURITIES LIMITED", position: "Accounting Intern", skills: ["Digital Marketing", "SQL", "Financial Modeling"]},
+            {id: 4, qualification: "Diploma", stream: "Commerce", degree: "ITI", degreeStream: "Computer Science", location: "Patna, Bihar", company: "JUBILANT FOODWORKS LIMITED", position: "Data Analysis Intern", skills: ["R", "Time Management", "Excel"]},
+            {id: 5, qualification: "Graduate", stream: "Science", degree: "B.Tech", degreeStream: "Electrical Engineering", location: "Chennai, Tamil Nadu", company: "STEEL AUTHORITY OF INDIA LIMITED", position: "Electronics Intern", skills: ["Excel", "Market Research", "Power BI"]},
+            {id: 6, qualification: "Graduate", stream: "Science", degree: "B.Tech", degreeStream: "Computer Science", location: "Bengaluru, Karnataka", company: "INFOSYS LIMITED", position: "Software Development Intern", skills: ["Java", "Python", "SQL"]},
+            {id: 7, qualification: "Graduate", stream: "Science", degree: "B.E.", degreeStream: "Mechanical Engineering", location: "Mumbai, Maharashtra", company: "TATA MOTORS LIMITED", position: "Mechanical Engineering Intern", skills: ["AutoCAD", "SolidWorks", "Thermodynamics"]},
+            {id: 8, qualification: "Diploma", stream: "Vocational", degree: "Diploma", degreeStream: "Electronics", location: "Hyderabad, Telangana", company: "BHARAT ELECTRONICS LIMITED", position: "Electronics Technician Intern", skills: ["Circuit Design", "Electronics", "PLC"]},
+            {id: 9, qualification: "12th Pass", stream: "Commerce", degree: null, degreeStream: null, location: "Delhi, Delhi", company: "RELIANCE INDUSTRIES LIMITED", position: "Sales Assistant Intern", skills: ["Communication", "MS Office", "Teamwork"]},
+            {id: 10, qualification: "Graduate", stream: "Commerce", degree: "BBA", degreeStream: "Marketing", location: "Pune, Maharashtra", company: "WIPRO LIMITED", position: "Digital Marketing Intern", skills: ["Digital Marketing", "Market Research", "PowerPoint"]},
+            {id: 11, qualification: "Graduate", stream: "Arts", degree: "B.A.", degreeStream: "Economics", location: "Kolkata, West Bengal", company: "STATE BANK OF INDIA", position: "Finance Intern", skills: ["Excel", "Financial Modeling", "Statistics"]},
+            {id: 12, qualification: "Diploma", stream: "Science", degree: "Diploma", degreeStream: "Civil Engineering", location: "Surat, Gujarat", company: "LARSEN & TOUBRO LIMITED", position: "Civil Engineering Intern", skills: ["AutoCAD", "CAD", "Problem Solving"]},
+            {id: 13, qualification: "Graduate", stream: "Science", degree: "B.Sc.", degreeStream: "Physics", location: "Noida, Uttar Pradesh", company: "DRDO", position: "Research Intern", skills: ["MATLAB", "Statistics", "Problem Solving"]},
+            {id: 14, qualification: "12th Pass", stream: "Arts", degree: null, degreeStream: null, location: "Lucknow, Uttar Pradesh", company: "HDFC BANK", position: "Customer Service Intern", skills: ["Communication", "MS Office", "Teamwork"]},
+            {id: 15, qualification: "Graduate", stream: "Commerce", degree: "B.Com", degreeStream: "Accounting", location: "Ahmedabad, Gujarat", company: "ADANI ENTERPRISES", position: "Accounting Intern", skills: ["Accounting", "Excel", "Financial Modeling"]}
+        ];
+        
+        console.log('Fallback data initialized with', this.internshipData.length, 'internships');
+    }
+
+    populateInitialOptions() {
+        if (document.getElementById('qualificationOptions').children.length === 0) {
+            this.populateQualifications();
+        }
+    }
+
+    toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const hamburger = document.getElementById('hamburgerBtn');
+        
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    }
+
+    closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const hamburger = document.getElementById('hamburgerBtn');
+        
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        hamburger.classList.remove('active');
+    }
+
+    toggleAuthMode() {
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const authTitle = document.getElementById('authTitle');
+        const authSubtitle = document.getElementById('authSubtitle');
+        const authToggleBtn = document.getElementById('authToggleBtn');
+        const authToggleText = document.getElementById('authToggleText');
+
+        if (loginForm.classList.contains('active')) {
+            loginForm.classList.remove('active');
+            signupForm.classList.add('active');
+            authTitle.textContent = 'Create Your Account';
+            authSubtitle.textContent = 'Join thousands of students finding their perfect internships';
+            authToggleBtn.textContent = 'Login';
+            authToggleText.innerHTML = 'Already have an account? <button type="button" id="authToggleBtn">Login</button>';
+        } else {
+            signupForm.classList.remove('active');
+            loginForm.classList.add('active');
+            authTitle.textContent = 'Login to Your Account';
+            authSubtitle.textContent = 'Access your personalized internship recommendations';
+            authToggleBtn.textContent = 'Sign up';
+            authToggleText.innerHTML = 'Don\'t have an account? <button type="button" id="authToggleBtn">Sign up</button>';
         }
         
-        const internshipSectorNormalized = internship.sector.toLowerCase();
+        document.getElementById('authToggleBtn').addEventListener('click', () => this.toggleAuthMode());
+    }
+
+    showPage(pageId) {
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+        document.getElementById(pageId).classList.add('active');
+        this.currentPage = pageId;
+    }
+
+    startWorkflow() {
+        this.resetUserProfile();
         
-        for (let userSector of this.userProfile.sectors) {
-            const sectorObj = this.sectors.find(s => s.id === userSector);
-            if (sectorObj) {
-                const sectorNameNormalized = sectorObj.name.toLowerCase();
-                
-                // Direct match
-                if (internshipSectorNormalized.includes(sectorNameNormalized) || 
-                    sectorNameNormalized.includes(internshipSectorNormalized)) {
-                    return 100;
-                }
-                
-                // Related sectors
-                const relatedSectors = {
-                    'technology': ['e-commerce', 'telecommunications'],
-                    'healthcare': ['education'],
-                    'retail': ['e-commerce'],
-                    'manufacturing': ['agriculture']
-                };
-                
-                if (relatedSectors[userSector] && 
-                    relatedSectors[userSector].some(related => internshipSectorNormalized.includes(related))) {
-                    return 70;
-                }
+        if (!this.dataLoaded) {
+            setTimeout(() => this.startWorkflow(), 200);
+            return;
+        }
+        
+        this.goToStep(1);
+    }
+
+    resetUserProfile() {
+        this.userProfile = {
+            qualification: null,
+            stream: null,
+            degree: null,
+            degreeStream: null,
+            skills: [],
+            location: null,
+            locationFlexible: false
+        };
+        this.currentStep = 1;
+    }
+
+    goToStep(step) {
+        let actualStep = step;
+        
+        if (step >= 3) {
+            const showDegreeStep = this.userProfile.qualification && this.userProfile.qualification !== '12th Pass';
+            
+            if (step === 3 && !showDegreeStep) {
+                actualStep = step + 1;
+            } else if (step === 4 && (!showDegreeStep || !this.userProfile.degree)) {
+                actualStep = step + 1;
             }
         }
+
+        if (actualStep > 6) actualStep = 6;
+
+        this.currentStep = actualStep;
+        this.showPage(`step${actualStep}`);
         
-        return 40; // General interest
+        const progressPercentage = (actualStep / 6) * 100;
+        const progressBar = document.querySelector(`#step${actualStep} .progress-fill`);
+        if (progressBar) {
+            progressBar.style.width = `${progressPercentage}%`;
+        }
+        
+        this.populateCurrentStepOptions(actualStep);
     }
 
-    displayRecommendations(recommendations) {
-        const container = document.getElementById('recommendations-container');
+    populateCurrentStepOptions(step) {
+        switch(step) {
+            case 1: this.populateQualifications(); break;
+            case 2: this.populateStreams(); break;
+            case 3: this.populateDegrees(); break;
+            case 4: this.populateDegreeStreams(); break;
+            case 5: this.populateSkills(); break;
+            case 6: this.populateLocations(); break;
+        }
+    }
+
+    populateQualifications() {
+        const container = document.getElementById('qualificationOptions');
         if (!container) return;
         
         container.innerHTML = '';
         
-        if (recommendations.length === 0) {
-            container.innerHTML = `
-                <div class="no-recommendations">
-                    <h3>${this.currentLanguage === 'hi' ? 'कोई उपयुक्त इंटर्नशिप नहीं मिली' : 'No suitable internships found'}</h3>
-                    <p>${this.currentLanguage === 'hi' ? 'कृपया अपनी प्राथमिकताएं बदलकर फिर से कोशिश करें' : 'Please try again with different preferences'}</p>
-                </div>
-            `;
-            return;
-        }
-        
-        recommendations.forEach((internship, index) => {
+        const icons = { '12th Pass': '🎓', 'Diploma': '📜', 'Graduate': '🎯' };
+
+        this.qualifications.forEach(qualification => {
             const card = document.createElement('div');
-            card.className = 'recommendation-card';
-            
-            const companyInitial = internship.company.charAt(0);
-            const matchPercentage = Math.round(internship.score);
-            
+            card.className = 'selection-card';
             card.innerHTML = `
-                <div class="score-badge">${matchPercentage}% ${this.currentLanguage === 'hi' ? 'मैच' : 'Match'}</div>
-                <div class="recommendation-header">
-                    <div class="company-icon">${companyInitial}</div>
-                    <div class="recommendation-info">
-                        <div class="job-title">${internship.title}</div>
-                        <div class="company-name">${internship.company}</div>
-                    </div>
-                </div>
-                
-                <div class="recommendation-details">
-                    <div class="detail-item">
-                        <span class="detail-icon">📍</span>
-                        <span>${internship.location}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">📅</span>
-                        <span>${internship.duration}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-icon">💰</span>
-                        <span>₹${internship.stipend}</span>
-                    </div>
-                </div>
-                
-                <div class="recommendation-actions">
-                    <button class="btn btn--primary apply-btn" onclick="app.applyToInternship(${internship.id})">
-                        ${this.currentLanguage === 'hi' ? 'आवेदन करें' : 'Apply Now'}
-                    </button>
-                    <button class="btn btn--secondary details-btn" onclick="app.toggleDetails(${internship.id})">
-                        ${this.currentLanguage === 'hi' ? 'विवरण देखें' : 'View Details'}
-                    </button>
-                </div>
-                
-                <div class="job-description" id="details-${internship.id}">
-                    <h4>${this.currentLanguage === 'hi' ? 'काम का विवरण' : 'Job Description'}</h4>
-                    <p>${internship.description}</p>
-                    <h4>${this.currentLanguage === 'hi' ? 'आवश्यक कौशल' : 'Required Skills'}</h4>
-                    <p>${internship.skills_required.join(', ')}</p>
-                </div>
+                <span class="icon">${icons[qualification] || '📚'}</span>
+                <h3>${qualification}</h3>
+                <p>Select if this is your highest qualification</p>
             `;
             
+            card.addEventListener('click', () => this.selectQualification(qualification));
             container.appendChild(card);
         });
     }
 
-    toggleDetails(internshipId) {
-        const details = document.getElementById(`details-${internshipId}`);
-        if (!details) return;
+    selectQualification(qualification) {
+        this.userProfile.qualification = qualification;
+        document.querySelectorAll('#qualificationOptions .selection-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        event.target.closest('.selection-card').classList.add('selected');
         
-        details.classList.toggle('show');
+        setTimeout(() => this.goToStep(2), 500);
+    }
+
+    populateStreams() {
+        const container = document.getElementById('streamOptions');
+        if (!container) return;
         
-        // Find the button that was clicked
-        const button = event.target;
-        if (details.classList.contains('show')) {
-            button.textContent = this.currentLanguage === 'hi' ? 'विवरण छुपाएं' : 'Hide Details';
-        } else {
-            button.textContent = this.currentLanguage === 'hi' ? 'विवरण देखें' : 'View Details';
+        container.innerHTML = '';
+        
+        const icons = { 'Arts': '🎨', 'Commerce': '💼', 'Science': '🔬', 'Vocational': '🔧' };
+
+        this.streams.forEach(stream => {
+            const card = document.createElement('div');
+            card.className = 'selection-card';
+            card.innerHTML = `
+                <span class="icon">${icons[stream] || '📖'}</span>
+                <h3>${stream}</h3>
+                <p>Your field of study</p>
+            `;
+            
+            card.addEventListener('click', () => this.selectStream(stream));
+            container.appendChild(card);
+        });
+    }
+
+    selectStream(stream) {
+        this.userProfile.stream = stream;
+        document.querySelectorAll('#streamOptions .selection-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        event.target.closest('.selection-card').classList.add('selected');
+        
+        setTimeout(() => {
+            if (this.userProfile.qualification === '12th Pass') {
+                this.goToStep(5);
+            } else {
+                this.goToStep(3);
+            }
+        }, 500);
+    }
+
+    populateDegrees() {
+        const container = document.getElementById('degreeOptions');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        const availableDegrees = this.degrees[this.userProfile.qualification] || [];
+        
+        availableDegrees.forEach(degree => {
+            const card = document.createElement('div');
+            card.className = 'selection-card';
+            card.innerHTML = `
+                <span class="icon">🎓</span>
+                <h3>${degree}</h3>
+                <p>Your degree type</p>
+            `;
+            
+            card.addEventListener('click', () => this.selectDegree(degree));
+            container.appendChild(card);
+        });
+    }
+
+    selectDegree(degree) {
+        this.userProfile.degree = degree;
+        document.querySelectorAll('#degreeOptions .selection-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        event.target.closest('.selection-card').classList.add('selected');
+        
+        setTimeout(() => this.goToStep(4), 500);
+    }
+
+    populateDegreeStreams() {
+        const container = document.getElementById('degreeStreamOptions');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        this.degreeStreams.forEach(stream => {
+            const card = document.createElement('div');
+            card.className = 'selection-card';
+            card.innerHTML = `
+                <span class="icon">🎯</span>
+                <h3>${stream}</h3>
+                <p>Your specialization</p>
+            `;
+            
+            card.addEventListener('click', () => this.selectDegreeStream(stream));
+            container.appendChild(card);
+        });
+    }
+
+    selectDegreeStream(stream) {
+        this.userProfile.degreeStream = stream;
+        document.querySelectorAll('#degreeStreamOptions .selection-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        event.target.closest('.selection-card').classList.add('selected');
+        
+        setTimeout(() => this.goToStep(5), 500);
+    }
+
+    populateSkills() {
+        const container = document.getElementById('skillsOptions');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        this.skills.forEach(skill => {
+            const badge = document.createElement('div');
+            badge.className = 'skill-badge';
+            badge.textContent = skill;
+            badge.dataset.skill = skill;
+            
+            badge.addEventListener('click', () => this.toggleSkill(skill, badge));
+            container.appendChild(badge);
+        });
+        
+        this.updateSkillsCounter();
+    }
+
+    toggleSkill(skill, element) {
+        const maxSkills = 3;
+        const currentSkills = this.userProfile.skills;
+        
+        if (currentSkills.includes(skill)) {
+            this.userProfile.skills = currentSkills.filter(s => s !== skill);
+            element.classList.remove('selected');
+        } else if (currentSkills.length < maxSkills) {
+            this.userProfile.skills.push(skill);
+            element.classList.add('selected');
+        }
+        
+        document.querySelectorAll('.skill-badge').forEach(badge => {
+            if (!badge.classList.contains('selected') && this.userProfile.skills.length >= maxSkills) {
+                badge.classList.add('disabled');
+            } else {
+                badge.classList.remove('disabled');
+            }
+        });
+        
+        this.updateSkillsCounter();
+        this.updateNextButton();
+    }
+
+    updateSkillsCounter() {
+        const counter = document.getElementById('skillsCount');
+        if (counter) {
+            counter.textContent = this.userProfile.skills.length;
         }
     }
 
-    applyToInternship(internshipId) {
-        const internship = this.sampleInternships.find(i => i.id === internshipId);
-        if (internship) {
-            this.showTemporaryMessage(
-                this.currentLanguage === 'hi' ? 
-                `${internship.title} के लिए आवेदन सफल!` :
-                `Applied successfully for ${internship.title}!`
+    updateNextButton() {
+        const nextBtn = document.getElementById('nextBtn5');
+        if (nextBtn) {
+            nextBtn.disabled = this.userProfile.skills.length === 0;
+        }
+    }
+
+    populateLocations() {
+        const container = document.getElementById('locationOptions');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        this.locations.forEach(location => {
+            const item = document.createElement('div');
+            item.className = 'location-item';
+            item.textContent = location;
+            item.dataset.location = location;
+            
+            item.addEventListener('click', () => this.selectLocation(location));
+            container.appendChild(item);
+        });
+    }
+
+    filterLocations(searchTerm) {
+        const items = document.querySelectorAll('.location-item');
+        const term = searchTerm.toLowerCase();
+        
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(term) ? 'block' : 'none';
+        });
+    }
+
+    selectAnywhereLocation() {
+        this.userProfile.location = 'anywhere';
+        this.userProfile.locationFlexible = true;
+        
+        // Update UI
+        const anywhereCard = document.getElementById('anywhereOption');
+        anywhereCard.classList.add('selected');
+        
+        // Clear other selections
+        document.querySelectorAll('.location-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        
+        setTimeout(() => this.showLoadingAndGenerateRecommendations(), 500);
+    }
+
+    selectLocation(location) {
+        this.userProfile.location = location;
+        this.userProfile.locationFlexible = false;
+        
+        // Update UI
+        document.querySelectorAll('.location-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        event.target.classList.add('selected');
+        
+        // Clear anywhere selection
+        document.getElementById('anywhereOption').classList.remove('selected');
+        
+        setTimeout(() => this.showLoadingAndGenerateRecommendations(), 500);
+    }
+
+    showLoadingAndGenerateRecommendations() {
+        this.showPage('loadingPage');
+        
+        const steps = document.querySelectorAll('.loading-step');
+        let currentStep = 0;
+        
+        const animateStep = () => {
+            if (currentStep > 0) {
+                steps[currentStep - 1].classList.remove('active');
+            }
+            if (currentStep < steps.length) {
+                steps[currentStep].classList.add('active');
+                currentStep++;
+                setTimeout(animateStep, 800);
+            } else {
+                setTimeout(() => this.generateRecommendations(), 1000);
+            }
+        };
+        
+        setTimeout(animateStep, 500);
+    }
+
+    generateRecommendations() {
+        console.log('Generating recommendations for profile:', this.userProfile);
+        
+        const recommendations = this.findMatchingInternships();
+        this.displayRecommendations(recommendations);
+        this.showPage('resultsPage');
+    }
+
+    findMatchingInternships() {
+        const profile = this.userProfile;
+        const matches = [];
+        let threshold = 40; // Start with 40% threshold
+        
+        // First pass - try with standard threshold
+        this.internshipData.forEach(internship => {
+            const score = this.calculateMatchScore(profile, internship);
+            if (score >= threshold) {
+                matches.push({
+                    ...internship,
+                    matchScore: score,
+                    matchedSkills: this.getMatchedSkills(profile.skills, internship.skills || []),
+                    matchReason: this.getMatchReason(profile, internship, score)
+                });
+            }
+        });
+        
+        // If we have fewer than 3 matches, progressively lower threshold
+        if (matches.length < 3) {
+            const thresholds = [30, 20, 10, 0];
+            
+            for (const newThreshold of thresholds) {
+                if (matches.length >= 5) break;
+                
+                this.internshipData.forEach(internship => {
+                    const score = this.calculateMatchScore(profile, internship);
+                    if (score >= newThreshold && score < threshold && 
+                        !matches.find(m => m.id === internship.id)) {
+                        matches.push({
+                            ...internship,
+                            matchScore: score,
+                            matchedSkills: this.getMatchedSkills(profile.skills, internship.skills || []),
+                            matchReason: this.getMatchReason(profile, internship, score),
+                            isAlternative: score < 40
+                        });
+                    }
+                });
+                
+                threshold = newThreshold;
+            }
+        }
+        
+        // Ensure we have at least 3 recommendations
+        if (matches.length < 3) {
+            // Add highest scoring remaining internships
+            const remaining = this.internshipData.filter(internship => 
+                !matches.find(m => m.id === internship.id)
             );
+            
+            remaining.forEach(internship => {
+                if (matches.length >= 5) return;
+                
+                const score = this.calculateMatchScore(profile, internship);
+                matches.push({
+                    ...internship,
+                    matchScore: score,
+                    matchedSkills: this.getMatchedSkills(profile.skills, internship.skills || []),
+                    matchReason: this.getMatchReason(profile, internship, score),
+                    isAlternative: true
+                });
+            });
+        }
+        
+        // Sort by match score and return top results
+        return matches.sort((a, b) => b.matchScore - a.matchScore).slice(0, 10);
+    }
+
+    calculateMatchScore(profile, internship) {
+        let score = 0;
+        
+        // Qualification match (30% weight)
+        if (profile.qualification === internship.qualification) {
+            score += 30;
+        } else if (this.isQualificationCompatible(profile.qualification, internship.qualification)) {
+            score += 15;
+        }
+        
+        // Stream match (20% weight)
+        if (profile.stream === internship.stream) {
+            score += 20;
+        }
+        
+        // Degree match (15% weight) - only if user has a degree
+        if (profile.degree && internship.degree && profile.degree === internship.degree) {
+            score += 15;
+        }
+        
+        // Degree stream match (15% weight) - only if user has degree stream
+        if (profile.degreeStream && internship.degreeStream && 
+            profile.degreeStream === internship.degreeStream) {
+            score += 15;
+        }
+        
+        // Skills match (20% weight)
+        const skillsMatch = this.calculateSkillsMatch(profile.skills, internship.skills || []);
+        score += skillsMatch * 20;
+        
+        // Location bonus (not part of core score, but adds if matching and not flexible)
+        if (!profile.locationFlexible && profile.location === internship.location) {
+            score += 5; // Small bonus for location match
+        }
+        
+        return Math.round(Math.max(0, Math.min(100, score)));
+    }
+
+    isQualificationCompatible(userQual, jobQual) {
+        const hierarchy = {
+            'Graduate': ['Graduate', 'Diploma', '12th Pass'],
+            'Diploma': ['Diploma', '12th Pass'],
+            '12th Pass': ['12th Pass']
+        };
+        
+        return hierarchy[userQual] && hierarchy[userQual].includes(jobQual);
+    }
+
+    calculateSkillsMatch(userSkills, jobSkills) {
+        if (!userSkills.length || !jobSkills.length) return 0;
+        
+        const matchedSkills = userSkills.filter(skill => 
+            jobSkills.some(jobSkill => jobSkill.toLowerCase() === skill.toLowerCase())
+        );
+        
+        return matchedSkills.length / Math.max(userSkills.length, jobSkills.length);
+    }
+
+    getMatchedSkills(userSkills, jobSkills) {
+        return userSkills.filter(skill => 
+            jobSkills.some(jobSkill => jobSkill.toLowerCase() === skill.toLowerCase())
+        );
+    }
+
+    getMatchReason(profile, internship, score) {
+        const reasons = [];
+        
+        if (profile.qualification === internship.qualification) {
+            reasons.push("Perfect qualification match");
+        } else if (this.isQualificationCompatible(profile.qualification, internship.qualification)) {
+            reasons.push("Compatible qualification level");
+        }
+        
+        if (profile.stream === internship.stream) {
+            reasons.push("Stream alignment");
+        }
+        
+        if (profile.degreeStream && internship.degreeStream && 
+            profile.degreeStream === internship.degreeStream) {
+            reasons.push("Specialization match");
+        }
+        
+        const matchedSkills = this.getMatchedSkills(profile.skills, internship.skills || []);
+        if (matchedSkills.length > 0) {
+            reasons.push(`${matchedSkills.length} skill(s) match`);
+        }
+        
+        if (profile.locationFlexible) {
+            reasons.push("Open to any location");
+        } else if (profile.location === internship.location) {
+            reasons.push("Location preference match");
+        }
+        
+        if (score < 40) {
+            reasons.push("Consider broadening criteria");
+        }
+        
+        return reasons.length > 0 ? reasons.join(" • ") : "Alternative opportunity";
+    }
+
+    displayRecommendations(recommendations) {
+        const container = document.getElementById('resultsGrid');
+        const alternativesSection = document.getElementById('alternativesSection');
+        const alternativesGrid = document.getElementById('alternativesGrid');
+        const resultsDescription = document.getElementById('resultsDescription');
+        
+        if (!container) return;
+        
+        container.innerHTML = '';
+        alternativesGrid.innerHTML = '';
+        
+        const primaryRecommendations = recommendations.filter(r => !r.isAlternative);
+        const alternativeRecommendations = recommendations.filter(r => r.isAlternative);
+        
+        // Update results description
+        if (this.userProfile.locationFlexible) {
+            resultsDescription.textContent = "Based on your profile and location flexibility, here are opportunities from across India";
+        } else {
+            resultsDescription.textContent = "Based on your profile and preferences, here are the best matches we found for you";
+        }
+        
+        // Show primary recommendations
+        if (primaryRecommendations.length > 0) {
+            primaryRecommendations.forEach(internship => {
+                const card = this.createRecommendationCard(internship);
+                container.appendChild(card);
+            });
+        }
+        
+        // Show alternatives if any
+        if (alternativeRecommendations.length > 0) {
+            alternativesSection.style.display = 'block';
+            alternativeRecommendations.forEach(internship => {
+                const card = this.createRecommendationCard(internship, true);
+                alternativesGrid.appendChild(card);
+            });
+        } else {
+            alternativesSection.style.display = 'none';
+        }
+        
+        // If no primary recommendations, show message
+        if (primaryRecommendations.length === 0 && alternativeRecommendations.length > 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 24px; background: var(--color-bg-2); border-radius: var(--radius-lg);">
+                    <h3>Expanding Your Search</h3>
+                    <p>We've found some opportunities that might interest you by broadening the matching criteria. Consider these alternatives below.</p>
+                </div>
+            `;
         }
     }
-}
 
-// Global functions for HTML onclick events
-function setLanguage(lang) {
-    if (window.app) {
-        window.app.setLanguage(lang);
+    createRecommendationCard(internship, isAlternative = false) {
+        const card = document.createElement('div');
+        card.className = `result-card ${this.getMatchQualityClass(internship.matchScore)}`;
+        
+        const matchedSkills = internship.matchedSkills || [];
+        const unmatchedSkills = (internship.skills || []).filter(skill => 
+            !matchedSkills.some(matched => matched.toLowerCase() === skill.toLowerCase())
+        );
+        
+        const badges = this.generateMatchBadges(internship);
+        
+        card.innerHTML = `
+            <div class="result-header">
+                <div class="result-company">${internship.company}</div>
+                <div class="result-position">${internship.position}</div>
+                <div class="result-location">📍 ${internship.location}</div>
+            </div>
+            <div class="result-body">
+                <div class="match-score">
+                    <div class="match-percentage">${internship.matchScore}%</div>
+                    <div class="match-label">Match</div>
+                </div>
+                
+                ${badges.length > 0 ? `
+                <div class="match-badges">
+                    ${badges.map(badge => `<span class="match-badge ${badge.class}">${badge.text}</span>`).join('')}
+                </div>` : ''}
+                
+                <div class="match-explanation">
+                    <strong>Why this match?</strong> ${internship.matchReason}
+                </div>
+                
+                <div class="skills-match">
+                    <h4>Required Skills</h4>
+                    <div class="skills-list">
+                        ${matchedSkills.map(skill => `<span class="skill-tag matched">${skill}</span>`).join('')}
+                        ${unmatchedSkills.map(skill => `<span class="skill-tag unmatched">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                <button class="btn btn--primary btn--full-width" onclick="alert('This would redirect to the application form for ${internship.company.replace(/'/g, "\\'")} - ${internship.position.replace(/'/g, "\\'")}')">Apply Now</button>
+            </div>
+        `;
+        
+        return card;
+    }
+
+    generateMatchBadges(internship) {
+        const badges = [];
+        const profile = this.userProfile;
+        
+        if (internship.matchedSkills && internship.matchedSkills.length > 0) {
+            badges.push({ text: "Skills Match", class: "skills-match" });
+        }
+        
+        if (profile.qualification === internship.qualification) {
+            badges.push({ text: "Qualification Match", class: "qualification-match" });
+        }
+        
+        if (profile.locationFlexible) {
+            badges.push({ text: "Open to All Locations", class: "location-flexible" });
+        }
+        
+        return badges;
+    }
+
+    getMatchQualityClass(score) {
+        if (score >= 60) return 'match-quality-high';
+        if (score >= 40) return 'match-quality-medium';
+        return 'match-quality-low';
+    }
+
+    resetAndStart() {
+        this.resetUserProfile();
+        this.showPage('homepage');
     }
 }
 
-function startApplication() {
-    if (window.app) {
-        window.app.startApplication();
-    }
-}
-
-function goBack() {
-    if (window.app) {
-        window.app.goBack();
-    }
-}
-
-function nextStep() {
-    if (window.app) {
-        window.app.nextStep();
-    }
-}
-
-function selectEducation(level) {
-    if (window.app) {
-        window.app.selectEducation(level);
-    }
-}
-
-function selectLocation(type) {
-    if (window.app) {
-        window.app.selectLocation(type);
-    }
-}
-
-function getRecommendations() {
-    if (window.app) {
-        window.app.getRecommendations();
-    }
-}
-
-function startOver() {
-    if (window.app) {
-        window.app.startOver();
-    }
-}
-
-// Initialize the app when DOM is loaded
+// Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.app = new InternshipApp();
-});
-
-// Text-to-speech support for accessibility (if available)
-function speakText(text) {
-    if ('speechSynthesis' in window && window.app) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = window.app.currentLanguage === 'hi' ? 'hi-IN' : 'en-US';
-        utterance.rate = 0.8;
-        speechSynthesis.speak(utterance);
-    }
-}
-
-// Keyboard navigation support
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && window.app) {
-        window.app.goBack();
-    }
+    new PMInternshipPortal();
 });
